@@ -1,6 +1,6 @@
 "use client";
-import NoteBox from "../components/NoteBox";
-import AddNoteButton from "../components/AddNoteButton";
+import NoteBox from "../components/notes/NoteBox";
+import Header from "../components/header/Header"
 import { useState } from "react";
 
 export type page = { id: number; label: string; text: string };
@@ -29,14 +29,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col flex-1 min-w-5 items-center justify-center bg-zinc-600 font-sans">
-      <div className="flex h-30 font-sans items-center text-5xl">
-        Jays Journaling App
-      </div>
-
-      {/* <div className="border-orange-500 border-2 h-40 w-40 sticky top-0">
-        <AddNoteButton onClick={handleAdd} />
-      </div> */}
-
+      <Header onClick={handleAdd}/>
       <div className="flex flex-wrap min-h-[100vh] min-w-[100vw] content-baseline flex-start row-gap-4 bg-red-500 justify-center rounded-lg">
         {journals.map((note) => (
           <NoteBox key={note.id} note={note} />
