@@ -1,8 +1,11 @@
-const AddNoteButton = () => {
+const AddNoteButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <div className="flex items-center justify-center w-67 h-67 bg-white rounded-lg mt-4 ml-6 text-gray-400 text-9xl cursor-pointer">
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center w-39 h-39 bg-white rounded-lg text-gray-400 text-9xl cursor-pointer"
+    >
       +
-    </div>
+    </button>
   );
 };
 
