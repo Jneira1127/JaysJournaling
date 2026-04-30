@@ -50,7 +50,7 @@ const Header = ({ onClick }: { onClick: () => void }) => {
       {openBurger && (
         <div
           ref={dropdownRef}
-          className={`${isClosing ? "slide-up" : "slide-down"} flex justify-center absolute gap-20 top-30 left-0 w-[100vw] min-h-[15vh] bg-red-300 flex flex-wrap p-4 shadow-xl `}
+          className={`${isClosing ? "slide-up" : "slide-down"} flex justify-center absolute gap-20 top-30 left-0 w-[100vw] min-h-[15vh] bg-red-300 flex flex-wrap p-4 shadow-xl`}
         >
           <AddNoteButton onClick={onClick} />
           <GroupedNotesButton onClick={onClick} />
