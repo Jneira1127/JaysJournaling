@@ -49,10 +49,10 @@ body {
 
 .slide-down {
   transform-origin: top;
-  animation: slideDown 0.25s ease-out forwards;
+  animation: slideDown .5s ease-out forwards;
 }
 
 .slide-up {
   transform-origin: top;
-  animation: slideUp 0.25s ease-in forwards;
+  animation: slideUp .3s ease-in forwards;
 }

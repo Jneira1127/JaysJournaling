@@ -9,7 +9,7 @@ const AddNoteButton = ({ onClick }: { onClick: () => void }) => {
       >
         <NoteAdd sx={{ fontSize: 85 }} />
       </button>
-      <p className="text-center mt-1 text-lg font-medium">ADD NOTE</p>
+      <p className="text-center mt-1 text-lg text-white font-medium">ADD NOTE</p>
     </div>
   );
 };
