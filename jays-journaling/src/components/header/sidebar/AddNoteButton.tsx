@@ -1,11 +1,16 @@
+import { NoteAdd } from "../../material-ui-components";
+
 const AddNoteButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center justify-center w-25 h-25 bg-white rounded-lg text-gray-400 text-9xl cursor-pointer"
-    >
-      +
-    </button>
+    <div>
+      <button
+        onClick={onClick}
+        className="flex items-center justify-center w-25 h-25 bg-white rounded-lg text-gray-400 text-9xl cursor-pointer"
+      >
+        <NoteAdd sx={{ fontSize: 85 }} />
+      </button>
+      <p className="text-center mt-1 text-lg font-medium">ADD NOTE</p>
+    </div>
   );
 };
 
