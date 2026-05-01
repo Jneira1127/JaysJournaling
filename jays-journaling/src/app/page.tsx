@@ -6,16 +6,22 @@ import GroupedNotesButton from "../components/header/sidebar/GroupNotesButton";
 import DeleteNoteButton from "../components/header/sidebar/DeleteNoteButton";
 import { useEffect, useRef, useState } from "react";
 
-export type page = { id: number; label: string; text: string };
+export type page = {
+  id: number;
+  label: string;
+  text: string;
+  isSelected: boolean;
+};
 
 const initialJournals: page[] = [
-  { id: 1, label: "Jays Note", text: "this is Jays note" },
+  { id: 1, label: "Jays Note", text: "this is Jays note", isSelected: false },
   {
     id: 2,
     label: "Lorem Ipsum",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    isSelected: false,
   },
-  { id: 3, label: "Untitled", text: "" },
+  { id: 3, label: "Untitled", text: "", isSelected: false },
 ];
 
 export default function Home() {
