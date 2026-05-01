@@ -2,9 +2,16 @@ import AddNoteButton from "./sidebar/AddNoteButton";
 import GroupedNotesButton from "./sidebar/GroupNotesButton";
 import DeleteNoteButton from "./sidebar/DeleteNoteButton";
 import { Hamburger, Burger } from "../material-ui-components";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { page } from "@/src/app/page";
 
-const Header = ({ onClick }: { onClick: () => void }) => {
+type HeaderProps = {
+  journal: page[];
+  handleJournal: Dispatch<SetStateAction<page[]>>;
+  deleteButton: Dispatch<SetStateAction<boolean>>;
+};
+
+const Header = ({ deleteButton, handleJournal, journal }: HeaderProps) => {
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -50,11 +57,14 @@ const Header = ({ onClick }: { onClick: () => void }) => {
       {openBurger && (
         <div
           ref={dropdownRef}
-          className={`${isClosing ? "slide-up" : "slide-down"} flex justify-center absolute border-b-5 border-gray-400 gap-20 top-30 left-0 w-[100vw] min-h-[15vh] bg-[#FF746C] flex flex-wrap p-4 shadow-xl`}
+          className={`${isClosing ? "slide-up" : "slide-down"} flex justify-center absolute border-b-5 border-gray-400 gap-20 top-30 left-0 w-[100vw] min-h-[15vh] bg-[#FF746C] flex-wrap p-4 shadow-xl`}
         >
-          <AddNoteButton onClick={onClick} />
-          <GroupedNotesButton onClick={onClick} />
-          <DeleteNoteButton onClick={onClick} />
+          <AddNoteButton handleJournal={handleJournal} pages={journal} />
+          <GroupedNotesButton />
+          <DeleteNoteButton />
+          {/* <AddNoteButton onClick={addButton} />
+          <GroupedNotesButton onClick={groupButton} />
+          <DeleteNoteButton onClick={deleteButton} /> */}
         </div>
       )}
     </div>
