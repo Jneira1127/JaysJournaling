@@ -1,7 +1,10 @@
 "use client";
 import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
-import { useState } from "react";
+import AddNoteButton from "../components/header/sidebar/AddNoteButton";
+import GroupedNotesButton from "../components/header/sidebar/GroupNotesButton";
+import DeleteNoteButton from "../components/header/sidebar/DeleteNoteButton";
+import { useEffect, useRef, useState } from "react";
 
 export type page = { id: number; label: string; text: string };
 
@@ -17,6 +20,10 @@ const initialJournals: page[] = [
 
 export default function Home() {
   const [journals, setJournals] = useState<page[]>(initialJournals);
+  const [openBurger, setOpenBurger] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLDivElement>(null);
 
   const handleAdd = () => {
     const newJournal: page = {
@@ -27,14 +34,67 @@ export default function Home() {
     setJournals((prev) => [...prev, newJournal]);
   };
 
-  return (
-    <div className="flex flex-col flex-1 min-w-5 items-center justify-center font-sans">
-      <Header onClick={handleAdd} />
+  const handleCloseBurger = () => {
+    setIsClosing(true); // trigger closing animation
+    setTimeout(() => {
+      setOpenBurger(false);
+      setIsClosing(false);
+    }, 250); // match your animation duration
+  };
 
-      <div className="flex flex-wrap min-h-[100vh] min-w-[100vw] content-baseline flex-start row-gap-4 bg-[#D10000] justify-center rounded-lg">
-        {journals.map((note) => (
-          <NoteBox key={note.id} note={note} />
-        ))}
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        openBurger &&
+        dropdownRef.current &&
+        burgerRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        !burgerRef.current.contains(e.target as Node)
+      ) {
+        handleCloseBurger();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openBurger]);
+
+  return (
+    <div className="flex flex-col flex-1 w-[100vw] h-[100vh] items-center justify-center font-sans">
+      <Header
+        handleCloseBurger={handleCloseBurger}
+        handleOpenBurger={setOpenBurger}
+        openBurger={openBurger}
+        burgerRef={burgerRef}
+      />
+
+      <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
+        {openBurger && (
+          <div
+            ref={dropdownRef}
+            className={`${isClosing ? "slide-left" : "slide-right"} flex flex-col w-[15vw] min-h-full bg-[#FF746C] shadow-xl shrink-0 transition-all duration-750 ease-in-out`}
+          >
+            <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
+              <AddNoteButton onClick={handleAdd} />
+              <GroupedNotesButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+              <DeleteNoteButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
+          {journals.map((note) => (
+            <NoteBox key={note.id} note={note} />
+          ))}
+        </div>
       </div>
     </div>
   );
