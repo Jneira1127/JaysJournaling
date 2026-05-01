@@ -25,7 +25,7 @@ const initialJournals: page[] = [
 ];
 
 export default function Home() {
-  const [journals, setJournals] = useState<page[]>(initialJournals);
+  const [journal, setJournal] = useState<page[]>(initialJournals);
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,11 +33,12 @@ export default function Home() {
 
   const handleAdd = () => {
     const newJournal: page = {
-      id: journals.length ? Math.max(...journals.map((j) => j.id)) + 1 : 1,
+      id: journal.length ? Math.max(...journal.map((j) => j.id)) + 1 : 1,
       label: "Untitled",
       text: "",
+      isSelected: false,
     };
-    setJournals((prev) => [...prev, newJournal]);
+    setJournal((prev) => [...prev, newJournal]);
   };
 
   const handleCloseBurger = () => {
@@ -81,7 +82,7 @@ export default function Home() {
             className={`${isClosing ? "slide-left" : "slide-right"} flex flex-col w-[15vw] min-h-full bg-[#FF746C] shadow-xl shrink-0 transition-all duration-750 ease-in-out`}
           >
             <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
-              <AddNoteButton onClick={handleAdd} />
+              <AddNoteButton pages={journal} handleJournal={setJournal}/>
               <GroupedNotesButton
                 onClick={function (): void {
                   throw new Error("Function not implemented.");
@@ -97,7 +98,7 @@ export default function Home() {
         )}
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
-          {journals.map((note) => (
+          {journal.map((note) => (
             <NoteBox key={note.id} note={note} />
           ))}
         </div>
