@@ -1,9 +1,10 @@
 "use client";
 import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
-import AddNoteButton from "../components/header/sidebar/AddNoteButton";
-import GroupedNotesButton from "../components/header/sidebar/GroupNotesButton";
-import DeleteNoteButton from "../components/header/sidebar/DeleteNoteButton";
+import AddNoteButton from "../components/header/sidebar/AddNoteIcon";
+import GroupedNotesButton from "../components/header/sidebar/GroupNotesIcon";
+import DeleteNoteButton from "../components/header/sidebar/DeleteButton/DeleteNoteIcon";
+import DeleteButton from "../components/header/sidebar/DeleteButton/DeleteButton";
 import { useEffect, useRef, useState } from "react";
 
 export type page = {
@@ -31,16 +32,6 @@ export default function Home() {
   const [visibleDelete, setVisibleDelete] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
-
-  const handleAdd = () => {
-    const newJournal: page = {
-      id: journal.length ? Math.max(...journal.map((j) => j.id)) + 1 : 1,
-      label: "Untitled",
-      text: "",
-      isSelected: false,
-    };
-    setJournal((prev) => [...prev, newJournal]);
-  };
 
   const handleCloseBurger = () => {
     setIsClosing(true); // trigger closing animation
@@ -98,9 +89,7 @@ export default function Home() {
           <div
             className={`flex justify-center w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-24" : "max-h-0"}`}
           >
-            <button className="w-40 h-20 bg-sky-400 border-black border-3 rounded-lg cursor-pointer">
-              Delete Notes
-            </button>
+            <DeleteButton handleJournal={setJournal} />
           </div>
           {journal.map((note) => (
             <NoteBox key={note.id} note={note} visibleDelete={visibleDelete} />

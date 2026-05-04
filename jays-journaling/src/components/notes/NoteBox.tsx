@@ -2,6 +2,7 @@ import Link from "next/link";
 import { page } from "@/src/app/page";
 import { CheckCircle, UncheckCircle } from "../material-ui-components";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const NoteBox = ({
   note,
@@ -11,19 +12,28 @@ const NoteBox = ({
   visibleDelete: boolean;
 }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const router = useRouter();
 
   return (
-    <Link
-      href={`/note/${note.id}`}
+    <div
+      onClick={(e) => {
+        if (!visibleDelete) router.push(`/note/${note.id}`);
+      }}
       className="w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
     >
       {visibleDelete && (
         <div
           className="absolute top-2 right-2 flex gap-1"
-          onClick={() => setIsChecked(!isChecked)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsChecked(!isChecked);
+          }}
         >
-          <CheckCircle sx={{ color: "skyblue" }} />
-          <UncheckCircle sx={{ color: "skyblue" }} />
+          {isChecked ? (
+            <CheckCircle sx={{ color: "skyblue" }} />
+          ) : (
+            <UncheckCircle sx={{ color: "skyblue" }} />
+          )}
         </div>
       )}
 
@@ -36,7 +46,7 @@ const NoteBox = ({
       <div className="flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500">
         {note.label}
       </div>
-    </Link>
+    </div>
   );
 };
 
