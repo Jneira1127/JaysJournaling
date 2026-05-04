@@ -76,26 +76,24 @@ export default function Home() {
       />
 
       <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
-        {openBurger && (
-          <div
-            ref={dropdownRef}
-            className={`${isClosing ? "slide-left" : "slide-right"} flex flex-col w-[15vw] min-h-full bg-[#FF746C] shadow-xl shrink-0 transition-all duration-750 ease-in-out`}
-          >
-            <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
-              <AddNoteButton pages={journal} handleJournal={setJournal}/>
-              <GroupedNotesButton
-                onClick={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-              <DeleteNoteButton
-                onClick={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-            </div>
+        <div
+          ref={dropdownRef}
+          className={`${openBurger ? "w-[15vw] slide-right" : "w-[0] slide-left"} flex flex-col min-h-full bg-[#FF746C] shadow-xl transition-all duration-250 ease-in-out`}
+        >
+          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
+            <AddNoteButton pages={journal} handleJournal={setJournal} />
+            <GroupedNotesButton
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <DeleteNoteButton
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
           </div>
-        )}
+        </div>
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
           {journal.map((note) => (

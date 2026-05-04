@@ -27,32 +27,34 @@ body {
 
 @keyframes slideRight {
   from {
-    transform: scaleX(0);
-    opacity: 0;
+    transform: translateX(0);
+    /* opacity: 0; */
   }
   to {
-    transform: scaleX(1);
-    opacity: 1;
+    transform: translateX(15vw);
+    /* opacity: 1; */
   }
 }
 
 @keyframes slideLeft {
   from {
-    transform: scaleX(1);
-    opacity: 1;
+    transform: translateX(14vw);
+    /* opacity: 1; */
   }
   to {
-    transform: scaleX(0);
-    opacity: 0;
+    transform: translateX(0);
+    /* opacity: 0; */
   }
 }
 
 .slide-right {
   transform-origin: left;
-  animation: slideRight .5s ease-out forwards;
+  transform: translateX(0);
+  /* animation: slideRight 0.5s ease-out forwards; */
 }
 
 .slide-left {
   transform-origin: left;
-  animation: slideLeft .3s ease-in forwards;
+  transform: translateX(-15vw);
+  /* animation: slideLeft 0.3s ease-in forwards; */
 }

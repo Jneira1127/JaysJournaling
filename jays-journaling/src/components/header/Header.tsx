@@ -1,4 +1,4 @@
-import { Hamburger, Burger } from "../material-ui-components";
+import { Hamburger } from "../material-ui-components";
 
 type HeaderProps = {
   handleCloseBurger: () => void;
@@ -16,7 +16,7 @@ const Header = ({
   return (
     <div className="relative flex justify-center items-center h-30 border-b-4 border-gray-400 bg-black min-h-[10vh] min-w-[100vw] sticky top-0 z-50 overflow-visible">
       <div className="absolute left-4" ref={burgerRef}>
-        <Burger
+        <Hamburger
           onClick={() =>
             openBurger ? handleCloseBurger() : handleOpenBurger(true)
           }
