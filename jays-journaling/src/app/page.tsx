@@ -28,6 +28,7 @@ export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [visibleDelete, setVisibleDelete] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
 
@@ -88,16 +89,21 @@ export default function Home() {
               }}
             />
             <DeleteNoteButton
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
+              onClick={() => setVisibleDelete(!visibleDelete)}
             />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
+          <div
+            className={`flex justify-center w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-24" : "max-h-0"}`}
+          >
+            <button className="w-40 h-20 bg-sky-400 border-black border-3 rounded-lg cursor-pointer">
+              Delete Notes
+            </button>
+          </div>
           {journal.map((note) => (
-            <NoteBox key={note.id} note={note} />
+            <NoteBox key={note.id} note={note} visibleDelete={visibleDelete} />
           ))}
         </div>
       </div>
