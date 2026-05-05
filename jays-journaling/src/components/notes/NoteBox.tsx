@@ -1,23 +1,23 @@
-import Link from "next/link";
 import { page } from "@/src/app/page";
 import {
   CheckCircle,
   Ellipses,
   UncheckCircle,
 } from "../material-ui-components";
-import DeleteNoteControls from "../header/sidebar/DeleteButton/DeleteNoteControls";
 import DropdownItem from "../notes/Dropdown/DropdownItems";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const NoteBox = ({
   note,
   visibleDelete,
   onDelete,
+  onToggleSelect,
 }: {
   note: page;
   visibleDelete: boolean;
   onDelete: (id: number) => void;
+  onToggleSelect: (id: number) => void;
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,11 @@ const NoteBox = ({
   return (
     <div
       onClick={() => {
-        if (!visibleDelete) router.push(`/note/${note.id}`);
+        if (visibleDelete) {
+          onToggleSelect(note.id);
+        } else {
+          router.push(`/note/${note.id}`);
+        }
       }}
       className="group w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
     >
@@ -38,7 +42,7 @@ const NoteBox = ({
             setIsChecked(!isChecked);
           }}
         >
-          {isChecked ? (
+          {note.isSelected ? (
             <CheckCircle sx={{ color: "skyblue" }} />
           ) : (
             <UncheckCircle sx={{ color: "skyblue" }} />

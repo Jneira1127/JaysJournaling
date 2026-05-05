@@ -36,7 +36,6 @@ export default function Home() {
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
-  const [isSelectMode, setIsSelectMode] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +56,12 @@ export default function Home() {
   };
 
   const deleteSelectedNotes = () => {
-    setJournal((prev) => prev.filter((note) => !note.isSelected));
+    setJournal((prev) =>
+      prev
+        .filter((note) => !note.isSelected)
+        .map((note) => ({ ...note, isSelected: false })),
+    );
+    setVisibleDelete(false);
   };
 
   const deleteSingleNote = (id: number) =>
@@ -111,23 +115,21 @@ export default function Home() {
         </div>
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
-          <div
-            className={`fixed bottom-10 flex justify-center z-50 pointer-events-none w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-20" : "max-h-0"}`}
-          >
-            <DeleteNoteControls
-              variant="bulk"
-              notes={journal}
-              onDeleteSelected={deleteSelectedNotes}
-              onToggleSelectMode={() => setIsSelectMode((prev) => !prev)}
-              isSelectMode={isSelectMode}
-            />
-          </div>
+          <DeleteNoteControls
+            variant="bulk"
+            notes={journal}
+            onDeleteSelected={deleteSelectedNotes}
+            onToggleSelectMode={() => setVisibleDelete(false)}
+            isSelectMode={visibleDelete}
+          />
+
           {journal.map((note) => (
             <NoteBox
               key={note.id}
               note={note}
               visibleDelete={visibleDelete}
               onDelete={deleteSingleNote}
+              onToggleSelect={toggleSelect}
             />
           ))}
         </div>
