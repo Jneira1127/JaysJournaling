@@ -6,6 +6,7 @@ import {
   LibraryBooks as GroupedNotes,
   LunchDining as Burger,
   Menu as Hamburger,
+  MoreVert as Ellipses,
   NoteAdd,
   RadioButtonUncheckedOutlined as UncheckCircle,
 } from "@mui/icons-material";
@@ -13,6 +14,7 @@ import {
 export {
   Burger,
   CheckCircle,
+  Ellipses,
   GroupedNotes,
   Hamburger,
   IconButton,

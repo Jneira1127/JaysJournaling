@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import AddNoteButton from "../components/header/sidebar/AddNoteIcon";
 import GroupedNotesButton from "../components/header/sidebar/GroupNotesIcon";
 import DeleteNoteButton from "../components/header/sidebar/DeleteButton/DeleteNoteIcon";
-import DeleteButton from "../components/header/sidebar/DeleteButton/DeleteButton";
+import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
 import { useEffect, useRef, useState } from "react";
 
 export type page = {
@@ -23,6 +23,12 @@ const initialJournals: page[] = [
     isSelected: false,
   },
   { id: 3, label: "Untitled", text: "", isSelected: false },
+  {
+    id: 4,
+    label: "sfafsad",
+    text: "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
+    isSelected: false,
+  },
 ];
 
 export default function Home() {
@@ -30,6 +36,7 @@ export default function Home() {
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
+  const [isSelectMode, setIsSelectMode] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +47,21 @@ export default function Home() {
       setIsClosing(false);
     }, 250); // match your animation duration
   };
+
+  const toggleSelect = (id: number) => {
+    setJournal((prev) =>
+      prev.map((note) =>
+        note.id === id ? { ...note, isSelected: !note.isSelected } : note,
+      ),
+    );
+  };
+
+  const deleteSelectedNotes = () => {
+    setJournal((prev) => prev.filter((note) => !note.isSelected));
+  };
+
+  const deleteSingleNote = (id: number) =>
+    setJournal((prev) => prev.filter((note) => note.id !== id));
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -80,19 +102,33 @@ export default function Home() {
               }}
             />
             <DeleteNoteButton
-              onClick={() => setVisibleDelete(!visibleDelete)}
+              onClick={() => {
+                setVisibleDelete(!visibleDelete);
+                handleCloseBurger();
+              }}
             />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
           <div
-            className={`flex justify-center w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-24" : "max-h-0"}`}
+            className={`fixed bottom-10 flex justify-center z-50 pointer-events-none w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-20" : "max-h-0"}`}
           >
-            <DeleteButton handleJournal={setJournal} />
+            <DeleteNoteControls
+              variant="bulk"
+              notes={journal}
+              onDeleteSelected={deleteSelectedNotes}
+              onToggleSelectMode={() => setIsSelectMode((prev) => !prev)}
+              isSelectMode={isSelectMode}
+            />
           </div>
           {journal.map((note) => (
-            <NoteBox key={note.id} note={note} visibleDelete={visibleDelete} />
+            <NoteBox
+              key={note.id}
+              note={note}
+              visibleDelete={visibleDelete}
+              onDelete={deleteSingleNote}
+            />
           ))}
         </div>
       </div>

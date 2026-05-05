@@ -1,25 +1,34 @@
 import Link from "next/link";
 import { page } from "@/src/app/page";
-import { CheckCircle, UncheckCircle } from "../material-ui-components";
-import { useState } from "react";
+import {
+  CheckCircle,
+  Ellipses,
+  UncheckCircle,
+} from "../material-ui-components";
+import DeleteNoteControls from "../header/sidebar/DeleteButton/DeleteNoteControls";
+import DropdownItem from "../notes/Dropdown/DropdownItems";
+import { MouseEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const NoteBox = ({
   note,
   visibleDelete,
+  onDelete,
 }: {
   note: page;
   visibleDelete: boolean;
+  onDelete: (id: number) => void;
 }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   return (
     <div
-      onClick={(e) => {
+      onClick={() => {
         if (!visibleDelete) router.push(`/note/${note.id}`);
       }}
-      className="w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
+      className="group w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
     >
       {visibleDelete && (
         <div
@@ -43,8 +52,35 @@ const NoteBox = ({
         </p>
       </div>
 
-      <div className="flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500">
+      <div className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500">
         {note.label}
+        <div className="absolute right-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen((prev) => !prev);
+            }}
+          >
+            <Ellipses
+              className="opacity-0 transition-opacity duration-450 group-hover:opacity-60"
+              sx={{ width: 30, height: 50 }}
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute right-0 bottom-full mb-1 w-36 bg-white border border-gray-200 rounded shadow-lg origin-bottom-right animate-[scaleIn_500ms_ease-out]">
+              <DropdownItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(note.id);
+                  setIsOpen(false);
+                }}
+              >
+                DELETE NOTE
+              </DropdownItem>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
