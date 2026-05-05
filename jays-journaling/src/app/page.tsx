@@ -1,44 +1,38 @@
 "use client";
 import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
-import AddNoteButton from "../components/header/sidebar/AddNoteIcon";
-import GroupedNotesButton from "../components/header/sidebar/GroupNotesIcon";
-import DeleteNoteButton from "../components/header/sidebar/DeleteButton/DeleteNoteIcon";
-import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
+import AddNoteButton from "../components/header/sidebar/AddNoteButton";
+import GroupedNotesButton from "../components/header/sidebar/GroupNotesButton";
+import DeleteNoteButton from "../components/header/sidebar/DeleteNoteButton";
 import { useEffect, useRef, useState } from "react";
 
-export type page = {
-  id: number;
-  label: string;
-  text: string;
-  isSelected: boolean;
-};
+export type page = { id: number; label: string; text: string };
 
 const initialJournals: page[] = [
-  { id: 1, label: "Jays Note", text: "this is Jays note", isSelected: false },
+  { id: 1, label: "Jays Note", text: "this is Jays note" },
   {
     id: 2,
     label: "Lorem Ipsum",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    isSelected: false,
   },
-  { id: 3, label: "Untitled", text: "", isSelected: false },
-  {
-    id: 4,
-    label: "sfafsad",
-    text: "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
-    isSelected: false,
-  },
+  { id: 3, label: "Untitled", text: "" },
 ];
 
 export default function Home() {
-  const [journal, setJournal] = useState<page[]>(initialJournals);
+  const [journals, setJournals] = useState<page[]>(initialJournals);
   const [openBurger, setOpenBurger] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [visibleDelete, setVisibleDelete] = useState(false);
-  const [isSelectMode, setIsSelectMode] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
+
+  const handleAdd = () => {
+    const newJournal: page = {
+      id: journals.length ? Math.max(...journals.map((j) => j.id)) + 1 : 1,
+      label: "Untitled",
+      text: "",
+    };
+    setJournals((prev) => [...prev, newJournal]);
+  };
 
   const handleCloseBurger = () => {
     setIsClosing(true); // trigger closing animation
@@ -47,21 +41,6 @@ export default function Home() {
       setIsClosing(false);
     }, 250); // match your animation duration
   };
-
-  const toggleSelect = (id: number) => {
-    setJournal((prev) =>
-      prev.map((note) =>
-        note.id === id ? { ...note, isSelected: !note.isSelected } : note,
-      ),
-    );
-  };
-
-  const deleteSelectedNotes = () => {
-    setJournal((prev) => prev.filter((note) => !note.isSelected));
-  };
-
-  const deleteSingleNote = (id: number) =>
-    setJournal((prev) => prev.filter((note) => note.id !== id));
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -90,45 +69,30 @@ export default function Home() {
       />
 
       <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
-        <div
-          ref={dropdownRef}
-          className={`${openBurger ? "w-[15vw] slide-right" : "w-[0] slide-left"} flex flex-col min-h-full bg-[#FF746C] shadow-xl transition-all duration-250 ease-in-out`}
-        >
-          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
-            <AddNoteButton pages={journal} handleJournal={setJournal} />
-            <GroupedNotesButton
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-            <DeleteNoteButton
-              onClick={() => {
-                setVisibleDelete(!visibleDelete);
-                handleCloseBurger();
-              }}
-            />
+        {openBurger && (
+          <div
+            ref={dropdownRef}
+            className={`${isClosing ? "slide-left" : "slide-right"} flex flex-col w-[15vw] min-h-full bg-[#FF746C] shadow-xl shrink-0 transition-all duration-750 ease-in-out`}
+          >
+            <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
+              <AddNoteButton onClick={handleAdd} />
+              <GroupedNotesButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+              <DeleteNoteButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
-          <div
-            className={`fixed bottom-10 flex justify-center z-50 pointer-events-none w-full overflow-hidden transition-all duration-300 ease-in-out ${visibleDelete ? "max-h-20" : "max-h-0"}`}
-          >
-            <DeleteNoteControls
-              variant="bulk"
-              notes={journal}
-              onDeleteSelected={deleteSelectedNotes}
-              onToggleSelectMode={() => setIsSelectMode((prev) => !prev)}
-              isSelectMode={isSelectMode}
-            />
-          </div>
-          {journal.map((note) => (
-            <NoteBox
-              key={note.id}
-              note={note}
-              visibleDelete={visibleDelete}
-              onDelete={deleteSingleNote}
-            />
+          {journals.map((note) => (
+            <NoteBox key={note.id} note={note} />
           ))}
         </div>
       </div>
