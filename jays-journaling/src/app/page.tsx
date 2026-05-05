@@ -31,6 +31,12 @@ const initialJournals: page[] = [
   },
 ];
 
+const Groups = {
+  PersonalNotes: [],
+  ProfesionalNotes: [],
+  MiscNotes: [],
+}
+
 export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
   const [openBurger, setOpenBurger] = useState(false);
