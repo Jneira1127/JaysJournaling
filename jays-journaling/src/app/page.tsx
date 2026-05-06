@@ -26,7 +26,7 @@ const initialJournals: page[] = [
   {
     id: 4,
     label: "sfafsad",
-    text: "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
+    text: "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
     isSelected: false,
   },
 ];
@@ -40,10 +40,10 @@ export default function Home() {
   const burgerRef = useRef<HTMLDivElement>(null);
 
   const handleCloseBurger = () => {
-    setIsClosing(true); // trigger closing animation
+    setIsClosing(!isClosing); // trigger closing animation
     setTimeout(() => {
       setOpenBurger(false);
-      setIsClosing(false);
+      setIsClosing(!isClosing);
     }, 250); // match your animation duration
   };
 
