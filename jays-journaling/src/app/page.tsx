@@ -3,6 +3,7 @@ import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
 import AddNoteButton from "../components/header/sidebar/AddNoteIcon";
 import GroupedNotesButton from "../components/header/sidebar/GroupNotesIcon";
+import FilterNotesButton from "../components/header/sidebar/FilterNotesIcon";
 import DeleteNoteButton from "../components/header/sidebar/DeleteButton/DeleteNoteIcon";
 import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
 import { useEffect, useRef, useState } from "react";
@@ -32,25 +33,24 @@ const initialJournals: page[] = [
 ];
 
 const Groups = {
-  PersonalNotes: [],
-  ProfesionalNotes: [],
-  MiscNotes: [],
-}
+  Personal: [],
+  Professional: [],
+  Misc: [],
+};
 
 export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
   const [openBurger, setOpenBurger] = useState(false);
+  const [openGroups, setOpenGroups] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
+  const groupsRef = useRef<HTMLDivElement>(null);
 
   const handleCloseBurger = () => {
-    setIsClosing(!isClosing); // trigger closing animation
-    setTimeout(() => {
-      setOpenBurger(false);
-      setIsClosing(!isClosing);
-    }, 250); // match your animation duration
+    setOpenBurger(false);
+    setOpenGroups(false);
   };
 
   const toggleSelect = (id: number) => {
@@ -75,12 +75,19 @@ export default function Home() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      if (!openBurger) return; // do nothing if sidebar is already closed
+
+      const clickedOutsidePrimary =
+        dropdownRef.current && !dropdownRef.current.contains(e.target as Node);
+      const clickedOutsideGroups =
+        groupsRef.current && !groupsRef.current.contains(e.target as Node);
+      const clickedOutsideBurger =
+        burgerRef.current && !burgerRef.current.contains(e.target as Node);
+
       if (
-        openBurger &&
-        dropdownRef.current &&
-        burgerRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        !burgerRef.current.contains(e.target as Node)
+        clickedOutsidePrimary &&
+        clickedOutsideGroups &&
+        clickedOutsideBurger
       ) {
         handleCloseBurger();
       }
@@ -102,21 +109,33 @@ export default function Home() {
       <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
         <div
           ref={dropdownRef}
-          className={`${openBurger ? "w-[15vw] slide-right" : "w-[0] slide-left"} flex flex-col min-h-full bg-[#FF746C] shadow-xl transition-all duration-250 ease-in-out`}
+          className={`${openBurger ? "w-[15vw] slide-right" : "w-[0] slide-left"} overflow-hidden flex flex-col min-h-full bg-[#FF746C] shadow-xl transition-all duration-250 ease-in-out`}
         >
-          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-20 p-4 pb-24 border-r-4 border-gray-400">
+          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-12 p-4 pb-24 border-r-4 border-gray-400">
             <AddNoteButton pages={journal} handleJournal={setJournal} />
-            <GroupedNotesButton
-              onClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
             <DeleteNoteButton
               onClick={() => {
                 setVisibleDelete(!visibleDelete);
                 handleCloseBurger();
               }}
             />
+            <GroupedNotesButton onClick={() => setOpenGroups(!openGroups)} />
+            <FilterNotesButton onClick={() => setOpenGroups(!openGroups)}/>
+          </div>
+        </div>
+        <div
+          ref={groupsRef}
+          className={`${openBurger && openGroups ? "w-[15vw] slide-right" : "w-[0] slide-left"} overflow-hidden flex flex-col min-h-full bg-[#FF847C] shadow-xl transition-all duration-250 ease-in-out`}
+        >
+          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-left pb-24 border-r-4 border-gray-400">
+            {Object.entries(Groups).map(([label, entries]) => (
+              <div
+                key={label}
+                className="border-t-2 w-full text-center pt-3 pb-3 cursor-pointer hover:bg-[#FF747C] first:border-t-0 last:border-b-2"
+              >
+                {label} Notes
+              </div>
+            ))}
           </div>
         </div>
 
