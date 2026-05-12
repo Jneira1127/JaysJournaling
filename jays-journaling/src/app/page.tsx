@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import Sidebar from "../components/header/sidebar/Sidebar";
 import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
 import { useEffect, useRef, useState } from "react";
+import { Notes } from "@mui/icons-material";
 
 export type page = {
   id: number;
@@ -42,7 +43,8 @@ export default function Home() {
   const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
-  
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const groupsRef = useRef<HTMLDivElement>(null);
 
   const handleCloseBurger = () => {
     setOpenBurger(false);
@@ -88,7 +90,6 @@ export default function Home() {
         handleCloseBurger();
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openBurger]);
@@ -101,47 +102,8 @@ export default function Home() {
         openBurger={openBurger}
         burgerRef={burgerRef}
       />
-
-      <Sidebar/>
-
-      <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
-        
-        <div
-          ref={groupsRef}
-          className={`${openBurger && openGroups ? "w-[15vw] slide-right" : "w-[0] slide-left"} overflow-hidden flex flex-col min-h-full bg-[#FF847C] shadow-xl transition-all duration-250 ease-in-out`}
-        >
-          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-left pb-24 border-r-4 border-gray-400">
-            {Object.entries(Groups).map(([label, entries]) => (
-              <div
-                key={label}
-                className="border-t-2 w-full text-center pt-3 pb-3 cursor-pointer hover:bg-[#FF747C] first:border-t-0 last:border-b-2"
-              >
-                {label} Notes
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-4 p-4 flex-1 content-start justify-center transition-all duration-1000 ease-in-out">
-          <DeleteNoteControls
-            variant="bulk"
-            notes={journal}
-            onDeleteSelected={deleteSelectedNotes}
-            onToggleSelectMode={() => setVisibleDelete(false)}
-            isSelectMode={visibleDelete}
-          />
-
-          {journal.map((note) => (
-            <NoteBox
-              key={note.id}
-              note={note}
-              visibleDelete={visibleDelete}
-              onDelete={deleteSingleNote}
-              onToggleSelect={toggleSelect}
-            />
-          ))}
-        </div>
-      </div>
+      <Sidebar />
+      <Notes/>
     </div>
   );
 }
