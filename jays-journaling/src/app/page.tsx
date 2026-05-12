@@ -1,10 +1,7 @@
 "use client";
 import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
-import AddNoteButton from "../components/header/sidebar/AddNoteIcon";
-import GroupedNotesButton from "../components/header/sidebar/GroupNotesIcon";
-import FilterNotesButton from "../components/header/sidebar/FilterNotesIcon";
-import DeleteNoteButton from "../components/header/sidebar/DeleteButton/DeleteNoteIcon";
+import Sidebar from "../components/header/sidebar/Sidebar";
 import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
 import { useEffect, useRef, useState } from "react";
 
@@ -44,9 +41,8 @@ export default function Home() {
   const [openGroups, setOpenGroups] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLDivElement>(null);
-  const groupsRef = useRef<HTMLDivElement>(null);
+  
 
   const handleCloseBurger = () => {
     setOpenBurger(false);
@@ -106,23 +102,10 @@ export default function Home() {
         burgerRef={burgerRef}
       />
 
+      <Sidebar/>
+
       <div className="flex flex-1 min-w-[100vw] bg-[#D10000]">
-        <div
-          ref={dropdownRef}
-          className={`${openBurger ? "w-[15vw] slide-right" : "w-[0] slide-left"} overflow-hidden flex flex-col min-h-full bg-[#FF746C] shadow-xl transition-all duration-250 ease-in-out`}
-        >
-          <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-12 p-4 pb-24 border-r-4 border-gray-400">
-            <AddNoteButton pages={journal} handleJournal={setJournal} />
-            <DeleteNoteButton
-              onClick={() => {
-                setVisibleDelete(!visibleDelete);
-                handleCloseBurger();
-              }}
-            />
-            <GroupedNotesButton onClick={() => setOpenGroups(!openGroups)} />
-            <FilterNotesButton onClick={() => setOpenGroups(!openGroups)}/>
-          </div>
-        </div>
+        
         <div
           ref={groupsRef}
           className={`${openBurger && openGroups ? "w-[15vw] slide-right" : "w-[0] slide-left"} overflow-hidden flex flex-col min-h-full bg-[#FF847C] shadow-xl transition-all duration-250 ease-in-out`}
