@@ -86,34 +86,36 @@ export default function Home() {
   }, [openBurger]);
 
   return (
-    <div className="flex flex-col flex-1 w-[100vw] h-[100vh] items-center justify-center font-sans">
+    <div className="flex flex-col w-screen h-screen font-sans">
       <Header
         burgerRef={burgerRef}
         handleCloseBurger={handleCloseBurger}
         handleOpenBurger={setOpenBurger}
         openBurger={openBurger}
       />
-      <Sidebar
-        dropdownRef={dropdownRef}
-        groups={Groups}
-        groupsRef={groupsRef}
-        handleCloseBurger={handleCloseBurger}
-        journal={journal}
-        openBurger={openBurger}
-        openGroups={openGroups}
-        setOpenGroups={setOpenGroups}
-        setJournal={setJournal}
-        setVisibleDelete={setVisibleDelete}
-        visibleDelete={visibleDelete}
-      />
-      <Notes
-        deleteSelectedNotes={deleteSelectedNotes}
-        deleteSingleNote={deleteSingleNote}
-        journal={journal}
-        setVisibleDelete={setVisibleDelete}
-        toggleSelect={toggleSelect}
-        visibleDelete={visibleDelete}
-      />
+      <div className="flex flex-1 w-full overflow-hidden">
+        <Sidebar
+          dropdownRef={dropdownRef}
+          groups={Groups}
+          groupsRef={groupsRef}
+          handleCloseBurger={handleCloseBurger}
+          journal={journal}
+          openBurger={openBurger}
+          openGroups={openGroups}
+          setOpenGroups={setOpenGroups}
+          setJournal={setJournal}
+          setVisibleDelete={setVisibleDelete}
+          visibleDelete={visibleDelete}
+        />
+        <Notes
+          deleteSelectedNotes={deleteSelectedNotes}
+          deleteSingleNote={deleteSingleNote}
+          journal={journal}
+          setVisibleDelete={setVisibleDelete}
+          toggleSelect={toggleSelect}
+          visibleDelete={visibleDelete}
+        />
+      </div>
     </div>
   );
 }
