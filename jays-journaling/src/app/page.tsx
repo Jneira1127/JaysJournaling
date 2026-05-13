@@ -1,10 +1,8 @@
 "use client";
-import NoteBox from "../components/notes/NoteBox";
 import Header from "../components/header/Header";
 import Sidebar from "../components/header/sidebar/Sidebar";
-import DeleteNoteControls from "../components/header/sidebar/DeleteButton/DeleteNoteControls";
 import { useEffect, useRef, useState } from "react";
-import { Notes } from "@mui/icons-material";
+import Notes from "../components/notes/Notes";
 
 export type page = {
   id: number;
@@ -38,13 +36,11 @@ const Groups = {
 
 export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
-  const [openBurger, setOpenBurger] = useState(false);
-  const [openGroups, setOpenGroups] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
-  const burgerRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const groupsRef = useRef<HTMLDivElement>(null);
+  const [openBurger, setOpenBurger] = useState(false);
+  const burgerRef = useRef<HTMLDivElement | null>(null);
+  const groupsRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleCloseBurger = () => {
     setOpenBurger(false);
@@ -57,15 +53,6 @@ export default function Home() {
         note.id === id ? { ...note, isSelected: !note.isSelected } : note,
       ),
     );
-  };
-
-  const deleteSelectedNotes = () => {
-    setJournal((prev) =>
-      prev
-        .filter((note) => !note.isSelected)
-        .map((note) => ({ ...note, isSelected: false })),
-    );
-    setVisibleDelete(false);
   };
 
   const deleteSingleNote = (id: number) =>
@@ -102,8 +89,24 @@ export default function Home() {
         openBurger={openBurger}
         burgerRef={burgerRef}
       />
-      <Sidebar />
-      <Notes/>
+      <Sidebar
+        dropdownRef={dropdownRef}
+        groups={Groups}
+        groupsRef={groupsRef}
+        handleCloseBurger={handleCloseBurger}
+        openBurger={openBurger}
+        setJournal={setJournal}
+        journal={journal}
+        setVisibleDelete={setVisibleDelete}
+        visibleDelete={visibleDelete}
+      />
+      <Notes
+        deleteSingleNote={deleteSingleNote}
+        journal={journal}
+        setVisibleDelete={setVisibleDelete}
+        toggleSelect={toggleSelect}
+        visibleDelete={visibleDelete}
+      />
     </div>
   );
 }
