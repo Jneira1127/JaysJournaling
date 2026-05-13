@@ -38,6 +38,7 @@ export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [openBurger, setOpenBurger] = useState(false);
+  const [openGroups, setOpenGroups] = useState(false);
   const burgerRef = useRef<HTMLDivElement | null>(null);
   const groupsRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -57,6 +58,9 @@ export default function Home() {
 
   const deleteSingleNote = (id: number) =>
     setJournal((prev) => prev.filter((note) => note.id !== id));
+
+  const deleteSelectedNotes = () =>
+    setJournal((prev) => prev.filter((page) => !page.isSelected));
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -84,23 +88,26 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 w-[100vw] h-[100vh] items-center justify-center font-sans">
       <Header
+        burgerRef={burgerRef}
         handleCloseBurger={handleCloseBurger}
         handleOpenBurger={setOpenBurger}
         openBurger={openBurger}
-        burgerRef={burgerRef}
       />
       <Sidebar
         dropdownRef={dropdownRef}
         groups={Groups}
         groupsRef={groupsRef}
         handleCloseBurger={handleCloseBurger}
-        openBurger={openBurger}
-        setJournal={setJournal}
         journal={journal}
+        openBurger={openBurger}
+        openGroups={openGroups}
+        setOpenGroups={setOpenGroups}
+        setJournal={setJournal}
         setVisibleDelete={setVisibleDelete}
         visibleDelete={visibleDelete}
       />
       <Notes
+        deleteSelectedNotes={deleteSelectedNotes}
         deleteSingleNote={deleteSingleNote}
         journal={journal}
         setVisibleDelete={setVisibleDelete}
