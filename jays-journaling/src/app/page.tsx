@@ -93,7 +93,7 @@ export default function Home() {
         handleOpenBurger={setOpenBurger}
         openBurger={openBurger}
       />
-      <div className="flex flex-1 w-full overflow-hidden">
+      <div className="flex flex-1 overflow-hidden bg-[#FF746C]">
         <Sidebar
           dropdownRef={dropdownRef}
           groups={Groups}
