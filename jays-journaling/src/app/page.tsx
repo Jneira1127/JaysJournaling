@@ -37,6 +37,7 @@ const Groups = {
 export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
   const [visibleDelete, setVisibleDelete] = useState(false);
+  const [visibleGrouping, setVisibleGrouping] = useState(false)
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
   const burgerRef = useRef<HTMLDivElement | null>(null);
@@ -61,6 +62,10 @@ export default function Home() {
 
   const deleteSelectedNotes = () =>
     setJournal((prev) => prev.filter((page) => !page.isSelected));
+
+  const groupSelectedNotes = () => {
+
+  }
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -105,15 +110,19 @@ export default function Home() {
           setOpenGroups={setOpenGroups}
           setJournal={setJournal}
           setVisibleDelete={setVisibleDelete}
+          setVisibleGrouping={setVisibleGrouping}
           visibleDelete={visibleDelete}
+          visibleGrouping={visibleGrouping}
         />
         <Notes
           deleteSelectedNotes={deleteSelectedNotes}
           deleteSingleNote={deleteSingleNote}
           journal={journal}
           setVisibleDelete={setVisibleDelete}
+          setVisibleGrouping={setVisibleGrouping}
           toggleSelect={toggleSelect}
           visibleDelete={visibleDelete}
+          visibleGrouping={visibleGrouping}
         />
       </div>
     </div>

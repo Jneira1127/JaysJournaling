@@ -58,9 +58,9 @@ const NoteBox = ({
       </div>
 
       <div className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500">
-        <div className="absolute left-0 top-0 bottom-0 flex items-stretch h-full">
-          <Bookmark/>
-        </div>
+        {/* <div className="absolute left-0 top-0 bottom-0 flex items-stretch h-full">
+          <Bookmark sx={{height:50, width:35}}/>
+        </div> */}
 
         {note.label}
         <div className="absolute right-2">
