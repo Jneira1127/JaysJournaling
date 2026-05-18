@@ -9,17 +9,21 @@ import DropdownItem from "../notes/Dropdown/DropdownItems";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const NoteBox = ({
-  note,
-  visibleDelete,
-  onDelete,
-  onToggleSelect,
-}: {
+type NoteboxProps = {
   note: page;
-  visibleDelete: boolean;
   onDelete: (id: number) => void;
   onToggleSelect: (id: number) => void;
-}) => {
+  visibleDelete: boolean;
+  visibleGrouping: boolean;
+};
+
+const NoteBox = ({
+  note,
+  onDelete,
+  onToggleSelect,
+  visibleDelete,
+  visibleGrouping,
+}: NoteboxProps) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -27,7 +31,7 @@ const NoteBox = ({
   return (
     <div
       onClick={() => {
-        if (visibleDelete) {
+        if (visibleDelete || visibleGrouping) {
           onToggleSelect(note.id);
         } else {
           router.push(`/note/${note.id}`);
@@ -35,7 +39,7 @@ const NoteBox = ({
       }}
       className="group w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
     >
-      {visibleDelete && (
+      {(visibleDelete || visibleGrouping) && (
         <div
           className="absolute top-2 right-2 flex gap-1"
           onClick={(e) => {

@@ -11,6 +11,13 @@ export type page = {
   isSelected: boolean;
 };
 
+export type Group = {
+  id: number;
+  name: string;
+  notes: page[];
+  color: string;
+};
+
 const initialJournals: page[] = [
   { id: 1, label: "Jays Note", text: "this is Jays note", isSelected: false },
   {
@@ -28,18 +35,20 @@ const initialJournals: page[] = [
   },
 ];
 
-const Groups = {
-  Personal: [],
-  Professional: [],
-  Misc: [],
-};
+const initialGroups: Group[] = [
+  { id: 1, name: "personal", notes: [], color: "#CC1100" },
+  { id: 2, name: "profesional", notes: [], color: "#82C8E5" },
+  { id: 3, name: "misc", notes: [], color: "#FFBF00" },
+];
 
 export default function Home() {
   const [journal, setJournal] = useState<page[]>(initialJournals);
+  const [groups, setGroups] = useState<Group[]>(initialGroups);
   const [visibleDelete, setVisibleDelete] = useState(false);
-  const [visibleGrouping, setVisibleGrouping] = useState(false)
+  const [visibleGrouping, setVisibleGrouping] = useState(false);
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const burgerRef = useRef<HTMLDivElement | null>(null);
   const groupsRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -63,9 +72,45 @@ export default function Home() {
   const deleteSelectedNotes = () =>
     setJournal((prev) => prev.filter((page) => !page.isSelected));
 
-  const groupSelectedNotes = () => {
+  const handleGroupClick = (groupId: number) => setSelectedGroup(groupId);
 
-  }
+  const handleConfirmGroup = () => groupSelectedNotes();
+
+  const groupSelectedNotes = () => {
+    if (selectedGroup === null) {
+      console.warn("Please select a group first.");
+      return;
+    }
+
+    const selectedNotes = journal.filter((note) => note.isSelected);
+
+    console.log(
+      "Updating group ID:",
+      selectedGroup,
+      "with notes:",
+      selectedNotes,
+    );
+
+    setGroups((prev) =>
+      prev.map((g) =>
+        g.id === selectedGroup
+          ? {
+              ...g,
+              notes: [
+                ...g.notes,
+                ...selectedNotes.filter(
+                  (note) => !g.notes.some((n) => n.id === note.id),
+                ),
+              ],
+            }
+          : g,
+      ),
+    );
+
+    setJournal((prev) => prev.map((note) => ({ ...note, isSelected: false })));
+    setVisibleGrouping(false);
+    setSelectedGroup(null);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -90,6 +135,10 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openBurger]);
 
+  useEffect(() => {
+    console.log("groups updated:", groups);
+  }, [groups]);
+
   return (
     <div className="flex flex-col w-screen h-screen font-sans">
       <Header
@@ -101,8 +150,10 @@ export default function Home() {
       <div className="flex flex-1 w-full overflow-hidden">
         <Sidebar
           dropdownRef={dropdownRef}
-          groups={Groups}
+          groups={groups}
           groupsRef={groupsRef}
+          handleGroupClick={handleGroupClick}
+          handleConfirmGroup={handleConfirmGroup}
           handleCloseBurger={handleCloseBurger}
           journal={journal}
           openBurger={openBurger}
@@ -117,6 +168,7 @@ export default function Home() {
         <Notes
           deleteSelectedNotes={deleteSelectedNotes}
           deleteSingleNote={deleteSingleNote}
+          groupSelectedNotes={groupSelectedNotes}
           journal={journal}
           setVisibleDelete={setVisibleDelete}
           setVisibleGrouping={setVisibleGrouping}
