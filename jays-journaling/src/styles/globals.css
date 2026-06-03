@@ -3,42 +3,57 @@
 :root {
   /* LIGHT MODE (Default) */
   --header-bg: #1a1a1a;
-  --sidebar-bg: #ffffff;
-  --main-bg: #f5f7fb;
+  --sidebar-bg: #e6e6e6;
+  --sidebar-icon-bg: #ffffff;
+  --main-bg: #f5fdff;
   --card-bg: #ffffff;
-  --card-footer: #e9ecef;
-  --text-main: #333333;
+  --card-footer: #5f5c5c;
+  --text-main: #7a7474;
+  --text-card: #000000;
   --sidebar-border: #d1d5db;
+  --header-border: #d1d5db;
+  --note-border: #000000;
 }
 
 [data-theme="dark"] {
-  --header-bg: #000000;
-  --sidebar-bg: #1e1e1e;
-  --main-bg: #121212;
-  --card-bg: #2c2c2c;
-  --card-footer: #3d3d3d;
-  --text-main: #e0e0e0;
-  --sidebar-border: #444;
+  --header-bg: #5c5c5c;
+  --sidebar-bg: #4c4a49;
+  --sidebar-icon-bg: #ffffff;
+  --main-bg: #3c4142;
+  --card-bg: #acaaaa;
+  --card-footer: #5f5c5c;
+  --text-main: #ffffff;
+  --text-card: #efeaea;
+  --sidebar-border: #ffffff;
+  --header-border: #ffffff;
+  --note-border: #000000;
 }
 
 [data-theme="psycho"] {
-  --header-bg: #000000;
-  --sidebar-bg: #4a0000;
-  --main-bg: #2b0000;
-  --card-bg: #1a0000;
-  --card-footer: #7f0000;
-  --text-main: #ffcccc;
-  --sidebar-border: #800000;
+  --header-bg: #5d100a;
+  --sidebar-bg: #ea7d7d;
+  --sidebar-icon-bg: #f00a0a;
+  --main-bg: #b72a2a;
+  --card-bg: #fb4343;
+  --card-footer: #b20000;
+  --text-main: #ca3328;
+  --text-card: #d8736c;
+  --sidebar-border: #b61308;
+  --header-border: #b61308;
+  --note-border: #ed0f0f;
 }
 
 @theme inline {
   --color-header: var(--header-bg);
   --color-sidebar: var(--sidebar-bg);
-  --color-main-bg: var(--main-bg);
+  --color-sidebar-icons: var(--sidebar-icon-bg) --color-main-bg: var(--main-bg);
   --color-card: var(--card-bg);
   --color-card-footer: var(--card-footer);
   --color-text-main: var(--text-main);
+  --color-text-card: var(--text-card);
   --color-sidebar-border: var(--sidebar-border);
+  --color-header-border: var(--header-border);
+  --color-note-border: var(--note-border);
 }
 
 @media (prefers-color-scheme: dark) {

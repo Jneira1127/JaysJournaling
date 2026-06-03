@@ -32,8 +32,8 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <div
-      className="relative flex justify-center items-center h-30 border-b-4 border-gray-400 min-h-[10vh] min-w-[100vw] sticky top-0 z-50 overflow-visible"
-      style={{ background: "var(--header-bg)" }}
+      className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50 overflow-visible"
+      style={{ background: "var(--header-bg)", borderColor: "var(--header-border)" }}
     >
       <div className="absolute left-4" ref={burgerRef}>
         <Hamburger
@@ -44,7 +44,12 @@ const Header = ({
           sx={{ width: 60, height: 60 }}
         />
       </div>
-      <h1 className="font-sans text-5xl text-white">Jays Journaling App</h1>
+      <div
+        className="font-sans text-5xl text-white"
+        style={{ color: "var(--text-card)" }}
+      >
+        Jays Journaling App
+      </div>
       <ThemeToggle />
     </div>
   );
