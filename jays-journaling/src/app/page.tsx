@@ -9,6 +9,7 @@ export type page = {
   label: string;
   text: string;
   isSelected: boolean;
+  groupColor?: string;
 };
 
 export type Group = {
@@ -36,7 +37,7 @@ const initialJournals: page[] = [
 ];
 
 const initialGroups: Group[] = [
-  { id: 1, name: "personal", notes: [], color: "#CC1100" },
+  { id: 1, name: "personal", notes: [], color: "#FF746C" },
   { id: 2, name: "profesional", notes: [], color: "#82C8E5" },
   { id: 3, name: "misc", notes: [], color: "#FFBF00" },
 ];
@@ -72,18 +73,21 @@ export default function Home() {
   const deleteSelectedNotes = () =>
     setJournal((prev) => prev.filter((page) => !page.isSelected));
 
-  const handleGroupClick = (groupId: number) => setSelectedGroup(groupId);
+  const handleGroupClick = (groupId: number) => {
+    console.log("Setting selected group to:", groupId);
+    setSelectedGroup(groupId);
+  };
 
   const handleConfirmGroup = () => groupSelectedNotes();
 
-  const groupSelectedNotes = () => {
-    if (selectedGroup === null) {
-      console.warn("Please select a group first.");
-      return;
-    }
+  const activeGroupColor = groups.find((g) => g.id == selectedGroup)?.color;
 
+  const groupSelectedNotes = () => {
+    const targetGroup = groups.find((g) => g.id === selectedGroup);
+    const colorToApply = targetGroup ? targetGroup.color : "#9ca3af";
     const selectedNotes = journal.filter((note) => note.isSelected);
 
+    //here for debugging purposes
     console.log(
       "Updating group ID:",
       selectedGroup,
@@ -107,7 +111,18 @@ export default function Home() {
       ),
     );
 
-    setJournal((prev) => prev.map((note) => ({ ...note, isSelected: false })));
+    setJournal((prev) =>
+      prev.map((note) => {
+        if (note.isSelected) {
+          return {
+            ...note,
+            isSelected: false,
+            groupColor: colorToApply,
+          };
+        }
+        return note;
+      }),
+    );
     setVisibleGrouping(false);
     setSelectedGroup(null);
   };
@@ -153,7 +168,7 @@ export default function Home() {
           groups={groups}
           groupsRef={groupsRef}
           handleGroupClick={handleGroupClick}
-          handleConfirmGroup={handleConfirmGroup}
+          // handleConfirmGroup={handleConfirmGroup}
           handleCloseBurger={handleCloseBurger}
           journal={journal}
           openBurger={openBurger}
@@ -166,6 +181,7 @@ export default function Home() {
           visibleGrouping={visibleGrouping}
         />
         <Notes
+          buttonColor={activeGroupColor}
           deleteSelectedNotes={deleteSelectedNotes}
           deleteSingleNote={deleteSingleNote}
           groupSelectedNotes={groupSelectedNotes}

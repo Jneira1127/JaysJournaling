@@ -5,7 +5,7 @@ import {
   Ellipses,
   UncheckCircle,
 } from "../material-ui-components";
-import DropdownItem from "../notes/Dropdown/DropdownItems";
+import DropdownItem from "./Dropdown/DropdownItems";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -55,13 +55,14 @@ const NoteBox = ({
         </div>
       )}
 
-      <div className="flex justify-center items-center h-5 rounded-lg h-50 text-black pt-5 ">
+      <div className="flex justify-center items-center rounded-lg h-50 text-black pt-5 ">
         <p className="text-sm line-clamp-8 pl-2 pr-2">
           {note.text || "Empty page..."}
         </p>
       </div>
 
-      <div className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500">
+      <div className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500"
+      style={{background: note.groupColor || "#6b7280"}}>
         {/* <div className="absolute left-0 top-0 bottom-0 flex items-stretch h-full">
           <Bookmark sx={{height:50, width:35}}/>
         </div> */}
@@ -76,7 +77,7 @@ const NoteBox = ({
           >
             <Ellipses
               className="opacity-0 transition-opacity duration-450 group-hover:opacity-60"
-              sx={{ width: 30, height: 50 }}
+              sx={{ width: 30, height: 50 }} 
             />
           </button>
 

@@ -7,7 +7,6 @@ export default async function NotePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  console.log(__dirname);
 
   const data = fs.readFileSync("src/noteData.json");
   const json = JSON.parse(data.toString()) as page[];
