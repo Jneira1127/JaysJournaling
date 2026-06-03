@@ -37,7 +37,8 @@ const NoteBox = ({
           router.push(`/note/${note.id}`);
         }
       }}
-      className="group w-67 h-67 bg-white rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
+      className="group w-67 h-67 rounded-lg overflow-hidden mt-4 ml-4 cursor-pointer border-3 border-black drop-shadow-lg"
+      style={{ background: "var(--note-bg)" }}
     >
       {(visibleDelete || visibleGrouping) && (
         <div
@@ -56,13 +57,18 @@ const NoteBox = ({
       )}
 
       <div className="flex justify-center items-center rounded-lg h-50 text-black pt-5 ">
-        <p className="text-sm line-clamp-8 pl-2 pr-2">
+        <p
+          className="text-sm line-clamp-8 pl-2 pr-2"
+          style={{ color: "var(--card-text)" }}
+        >
           {note.text || "Empty page..."}
         </p>
       </div>
 
-      <div className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500"
-      style={{background: note.groupColor || "#6b7280"}}>
+      <div
+        className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500"
+        style={{ background: note.groupColor || "var(--primary)" }}
+      >
         {/* <div className="absolute left-0 top-0 bottom-0 flex items-stretch h-full">
           <Bookmark sx={{height:50, width:35}}/>
         </div> */}
@@ -77,7 +83,7 @@ const NoteBox = ({
           >
             <Ellipses
               className="opacity-0 transition-opacity duration-450 group-hover:opacity-60"
-              sx={{ width: 30, height: 50 }} 
+              sx={{ width: 30, height: 50 }}
             />
           </button>
 

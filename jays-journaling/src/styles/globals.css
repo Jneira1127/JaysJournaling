@@ -1,15 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* LIGHT MODE (Default) */
+  --header-bg: #1a1a1a;
+  --sidebar-bg: #ffffff;
+  --main-bg: #f5f7fb;
+  --card-bg: #ffffff;
+  --card-footer: #e9ecef;
+  --text-main: #333333;
+  --sidebar-border: #d1d5db;
+}
+
+[data-theme="dark"] {
+  --header-bg: #000000;
+  --sidebar-bg: #1e1e1e;
+  --main-bg: #121212;
+  --card-bg: #2c2c2c;
+  --card-footer: #3d3d3d;
+  --text-main: #e0e0e0;
+  --sidebar-border: #444;
+}
+
+[data-theme="psycho"] {
+  --header-bg: #000000;
+  --sidebar-bg: #4a0000;
+  --main-bg: #2b0000;
+  --card-bg: #1a0000;
+  --card-footer: #7f0000;
+  --text-main: #ffcccc;
+  --sidebar-border: #800000;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-header: var(--header-bg);
+  --color-sidebar: var(--sidebar-bg);
+  --color-main-bg: var(--main-bg);
+  --color-card: var(--card-bg);
+  --color-card-footer: var(--card-footer);
+  --color-text-main: var(--text-main);
+  --color-sidebar-border: var(--sidebar-border);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,9 +49,11 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--main-bg);
+  color: var(--text-main);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 @keyframes slideRight {

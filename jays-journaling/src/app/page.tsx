@@ -1,7 +1,7 @@
 "use client";
 import Header from "../components/header/Header";
 import Sidebar from "../components/header/sidebar/Sidebar";
-import { useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import Notes from "../components/notes/Notes";
 
 export type page = {
@@ -149,10 +149,6 @@ export default function Home() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openBurger]);
-
-  useEffect(() => {
-    console.log("groups updated:", groups);
-  }, [groups]);
 
   return (
     <div className="flex flex-col w-screen h-screen font-sans">
