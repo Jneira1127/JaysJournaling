@@ -2,55 +2,73 @@
 
 :root {
   /* LIGHT MODE (Default) */
+  --sidebar-icon: #5f5d5d;
   --header-bg: #1a1a1a;
   --sidebar-bg: #e6e6e6;
   --sidebar-icon-bg: #ffffff;
+  --sidebar-group-hover-bg: #ffffff;
   --main-bg: #f5fdff;
   --card-bg: #ffffff;
   --card-footer: #5f5c5c;
   --text-main: #7a7474;
   --text-card: #000000;
+  --text-header: #ffffff;
   --sidebar-border: #d1d5db;
   --header-border: #d1d5db;
   --note-border: #000000;
 }
 
 [data-theme="dark"] {
+  --sidebar-icon: #000000;
   --header-bg: #5c5c5c;
   --sidebar-bg: #4c4a49;
   --sidebar-icon-bg: #ffffff;
+  --sidebar-group-hover-bg: #5d5c5c;
   --main-bg: #3c4142;
   --card-bg: #acaaaa;
   --card-footer: #5f5c5c;
   --text-main: #ffffff;
   --text-card: #efeaea;
+  --text-header: #ffffff;
   --sidebar-border: #ffffff;
   --header-border: #ffffff;
   --note-border: #000000;
 }
 
 [data-theme="psycho"] {
+  --sidebar-icon: #b80909;
   --header-bg: #5d100a;
   --sidebar-bg: #ea7d7d;
   --sidebar-icon-bg: #f00a0a;
+  --sidebar-group-hover-bg: #ff747c;
   --main-bg: #b72a2a;
   --card-bg: #fb4343;
   --card-footer: #b20000;
   --text-main: #ca3328;
   --text-card: #d8736c;
+  --text-header: #d66565;
   --sidebar-border: #b61308;
   --header-border: #b61308;
   --note-border: #ed0f0f;
 }
 
 @theme inline {
+  --font-oi: var(--font-oi);
+  --font-rubik: var(--font-rubik);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
   --color-header: var(--header-bg);
+  --color-sidebar-group-hover-bg: var(--sidebar-group-hover-bg);
   --color-sidebar: var(--sidebar-bg);
-  --color-sidebar-icons: var(--sidebar-icon-bg) --color-main-bg: var(--main-bg);
+  --color-sidebar-icons: var(--sidebar-icon);
+  --color-sidebar-icons-bg: var(--sidebar-icon-bg);
+  --color-main-bg: var(--main-bg);
   --color-card: var(--card-bg);
   --color-card-footer: var(--card-footer);
   --color-text-main: var(--text-main);
   --color-text-card: var(--text-card);
+  --color-text-header: var(--text-header);
   --color-sidebar-border: var(--sidebar-border);
   --color-header-border: var(--header-border);
   --color-note-border: var(--note-border);

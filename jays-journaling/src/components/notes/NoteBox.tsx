@@ -59,7 +59,7 @@ const NoteBox = ({
         </div>
       )}
 
-      <div className="flex justify-center items-center rounded-lg h-50 text-black pt-5 ">
+      <div className="font-mono flex justify-center items-center rounded-lg h-50 text-black pt-5 ">
         <p
           className="text-sm line-clamp-8 pl-2 pr-2"
           style={{ color: "var(--text-card)" }}
@@ -69,7 +69,7 @@ const NoteBox = ({
       </div>
 
       <div
-        className="relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500"
+        className="font-mono relative flex justify-center items-center border-black h-20 pb-4 rounded-sm text-black bg-gray-500"
         style={{
           background: note.groupColor || "var(--card-footer)",
           color: "var(--text-card)",

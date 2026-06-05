@@ -10,7 +10,8 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(cycle[theme])}
-      className="absolute right-4 text-white border border-white px-3 py-1 rounded-full text-sm hover:opacity-80"
+      className="absolute right-4 text-white border-2 px-3 py-1 rounded-full text-sm hover:opacity-80"
+      style={{ borderColor: "var(--text-header)", color: "var(--text-header)" }}
     >
       {labels[theme]}
     </button>
@@ -33,7 +34,10 @@ const Header = ({
   return (
     <div
       className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50 overflow-visible"
-      style={{ background: "var(--header-bg)", borderColor: "var(--header-border)" }}
+      style={{
+        background: "var(--header-bg)",
+        borderColor: "var(--header-border)",
+      }}
     >
       <div className="absolute left-4" ref={burgerRef}>
         <Hamburger
@@ -41,12 +45,12 @@ const Header = ({
             openBurger ? handleCloseBurger() : handleOpenBurger(true)
           }
           className="relative text-lg cursor-pointer"
-          sx={{ width: 60, height: 60 }}
+          sx={{ width: 60, height: 60, color: "var(--text-header)" }}
         />
       </div>
       <div
-        className="font-sans text-5xl text-white"
-        style={{ color: "var(--text-card)" }}
+        className="font-rubik text-5xl text-white"
+        style={{ color: "var(--text-header)" }}
       >
         Jays Journaling App
       </div>
