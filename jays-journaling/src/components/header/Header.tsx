@@ -10,7 +10,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(cycle[theme])}
-      className="absolute right-4 text-white border-2 px-3 py-1 rounded-full text-sm hover:opacity-80"
+      className="absolute right-4 text-white border-2 px-3 py-1 rounded-full text-sm hover:opacity-80 cursor-pointer"
       style={{ borderColor: "var(--text-header)", color: "var(--text-header)" }}
     >
       {labels[theme]}
@@ -49,7 +49,7 @@ const Header = ({
         />
       </div>
       <div
-        className="font-rubik text-5xl text-white"
+        className="font-oi text-5xl text-white"
         style={{ color: "var(--text-header)" }}
       >
         Jays Journaling App
