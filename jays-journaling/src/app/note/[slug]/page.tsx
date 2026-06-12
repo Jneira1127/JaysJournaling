@@ -19,22 +19,13 @@ export default async function NotePage({
   });
   return (
     <div
-      className="border-3 rounded-lg overflow-hidden m-10"
+      className="border-r-4 border-l-4 border-b-4 rounded-lg m-10"
       style={{
         background: "var(--card-bg)",
         borderColor: "var(--note-border)",
-        minHeight: "calc(100vh - 5rem)",
+        minHeight: "calc(100dvh - 5rem)",
       }}
     >
-      {/* <div
-        className="font-oi relative flex justify-center items-center h-20 text-3xl"
-        style={{
-          background: note?.groupColor || "var(--card-footer)",
-          color: "var(--note-label-txt-color)",
-        }}
-      >
-        {note?.label}
-      </div> */}
       <NoteEditor
         initialText={note?.text}
         initialLabel={note?.label}
