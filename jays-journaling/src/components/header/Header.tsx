@@ -5,7 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const cycle = { light: "dark", dark: "psycho", psycho: "light" } as const;
-  const labels = { light: "🌙 Dark", dark: "🔴 Psycho", psycho: "☀️ Light" };
+  const labels = { light: "☀️ Light", dark: "🌙 Dark", psycho: "🔴 Psycho" };
 
   return (
     <button
