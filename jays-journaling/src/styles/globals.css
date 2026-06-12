@@ -3,7 +3,7 @@
 :root {
   /* LIGHT MODE (Default) */
   --sidebar-icon: #5f5d5d;
-  --header-bg: #1a1a1a;
+  --header-bg: #5f5c5c;
   --sidebar-bg: #e6e6e6;
   --sidebar-icon-bg: #ffffff;
   --sidebar-group-hover-bg: #ffffff;
@@ -16,16 +16,17 @@
   --sidebar-border: #d1d5db;
   --header-border: #d1d5db;
   --note-border: #000000;
+  --note-label-txt-color: #ebebeb;
 }
 
 [data-theme="dark"] {
   --sidebar-icon: #000000;
-  --header-bg: #5c5c5c;
+  --header-bg: #000000;
   --sidebar-bg: #4c4a49;
   --sidebar-icon-bg: #ffffff;
   --sidebar-group-hover-bg: #5d5c5c;
   --main-bg: #3c4142;
-  --card-bg: #acaaaa;
+  --card-bg: #8e8e8e;
   --card-footer: #5f5c5c;
   --text-main: #ffffff;
   --text-card: #efeaea;
@@ -33,6 +34,7 @@
   --sidebar-border: #ffffff;
   --header-border: #ffffff;
   --note-border: #000000;
+  --note-label-txt-color: #ffffff;
 }
 
 [data-theme="psycho"] {
@@ -45,11 +47,12 @@
   --card-bg: #fb4343;
   --card-footer: #b20000;
   --text-main: #ca3328;
-  --text-card: #d8736c;
+  --text-card: #f8b8c9;
   --text-header: #d66565;
   --sidebar-border: #b61308;
   --header-border: #b61308;
   --note-border: #ed0f0f;
+  --note-label-txt-color: #ff3030;
 }
 
 @theme inline {
@@ -72,6 +75,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-header-border: var(--header-border);
   --color-note-border: var(--note-border);
+  --color-note-label-txt: var(--note-label-txt-color);
 }
 
 @media (prefers-color-scheme: dark) {
