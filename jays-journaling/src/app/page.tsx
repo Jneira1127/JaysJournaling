@@ -1,7 +1,7 @@
 "use client";
 import Header from "../components/header/Header";
 import Sidebar from "../components/header/sidebar/Sidebar";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Notes from "../components/notes/Notes";
 
 export type page = {
@@ -9,7 +9,8 @@ export type page = {
   label: string;
   text: string;
   isSelected: boolean;
-  groupColor?: string;
+  groupColor?: string | null;
+  groupId?: number | null;
 };
 
 export type Group = {
@@ -38,7 +39,7 @@ const initialJournals: page[] = [
 
 const initialGroups: Group[] = [
   { id: 1, name: "personal", notes: [], color: "#FF746C" },
-  { id: 2, name: "profesional", notes: [], color: "#82C8E5" },
+  { id: 2, name: "professional", notes: [], color: "#82C8E5" },
   { id: 3, name: "misc", notes: [], color: "#FFBF00" },
 ];
 
