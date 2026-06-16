@@ -3,7 +3,7 @@
 :root {
   /* LIGHT MODE (Default) */
   --header-bg: #0A2647;
-  --sidebar-bg: #225286;
+  --sidebar-bg: #91a8c2;
   --sidebar-group-bg: #F5F0E0;
   --main-bg: #FDF6E3;
   --sidebar-icon-bg: #FFF8E7;
@@ -17,7 +17,7 @@
   --sidebar-border: #0A2647;
   --header-border: #0A2647;
   --note-border: #D4B870;
-  --sidebar-group-hover-bg: #2A5298;
+  --sidebar-group-hover-bg: #c0deff;
 }
 
 [data-theme="dark"] {
@@ -25,7 +25,7 @@
   --sidebar-bg: #071227;
   --sidebar-group-bg: #0D1F3C;
   --main-bg: #0A1628;
-  --sidebar-icon-bg: #6580ac;
+  --sidebar-icon-bg: #b3c8e9;
   --sidebar-icon: #0D1F3C;
   --card-bg: #112244;
   --card-footer: #071227;
@@ -43,7 +43,7 @@
   --sidebar-icon: #8b0000;
   --header-bg: #3d0a0a;
   --sidebar-bg: #5c0f0f;
-  --sidebar-icon-bg: #b01818;
+  --sidebar-icon-bg: #e88a8a;
   --sidebar-group-hover-bg: #9e2020;
   --main-bg: #7a1414;
   --card-bg: #c42222;

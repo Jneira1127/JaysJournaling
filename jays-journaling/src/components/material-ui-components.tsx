@@ -1,6 +1,7 @@
 import { IconButton } from "@mui/material";
 
 import {
+  ArrowCircleLeftOutlined as BackArrow,
   Bookmark,
   CheckCircle,
   DeleteForever as TrashCan,
@@ -14,6 +15,7 @@ import {
 } from "@mui/icons-material";
 
 export {
+  BackArrow,
   Bookmark,
   Burger,
   CheckCircle,
