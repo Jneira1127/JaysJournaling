@@ -1,5 +1,4 @@
-import fs from "fs";
-import { page } from "@/src/app/page";
+import { prisma } from "@/src/lib/db";
 import NoteEditor from "@/src/components/notes/NoteBox/NoteEditor";
 import { notFound } from "next/navigation";
 
@@ -10,14 +9,14 @@ export default async function NotePage({
 }) {
   const { slug } = await params;
 
-  const data = fs.readFileSync("src/noteData.json");
-  const json = JSON.parse(data.toString()) as page[];
-  console.log(json);
-  const note = json.find((value) => value.id.toString() === slug);
+  // Convert slug to number since your DB IDs are Integers
+  const noteId = parseInt(slug);
 
-  if (!note) {
-    notFound(); // This shows your 404 page and stops execution
-  }
+  const note = await prisma.note.findUnique({
+    where: { id: noteId },
+  });
+
+  if (!note) notFound();
 
   return (
     <div
@@ -29,10 +28,10 @@ export default async function NotePage({
       }}
     >
       <NoteEditor
-        id={note?.id}
-        initialText={note?.text}
-        initialLabel={note?.label}
-        groupColor={note?.groupColor}
+        id={note.id}
+        initialText={note.text}
+        initialLabel={note.label}
+        groupColor={note.groupColor}
       />
     </div>
   );

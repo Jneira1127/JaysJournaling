@@ -6,29 +6,33 @@ type ThemeType = "light" | "dark" | "psycho";
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
-  
+
   const options: { id: ThemeType; label: string; icon: string }[] = [
     { id: "light", label: "Light", icon: "☀️" },
     { id: "dark", label: "Dark", icon: "🌙" },
     { id: "psycho", label: "Psycho", icon: "🔴" },
   ];
 
+  const activeIndex = options.findIndex((o) => o.id === theme);
+
   return (
-    <div 
+    <div
+      suppressHydrationWarning
       className="absolute right-4 flex p-1 rounded-full border-2 transition-all duration-300"
-      style={{ 
+      style={{
         borderColor: "var(--text-header)",
-        background: "rgba(0,0,0,0.05)" // Subtle inner background
+        background: "rgba(0,0,0,0.05)", // Subtle inner background
       }}
     >
       {/* Sliding Background Highlight */}
-      <div 
+      <div
+        suppressHydrationWarning
         className="absolute h-[calc(100%-8px)] transition-all duration-300 ease-out rounded-full shadow-sm"
         style={{
-          width: `calc(${100 / options.length}% - 4px)`,
-          transform: `translateX(${options.findIndex(o => o.id === theme) * 100}%)`,
+          width: `calc(33.33% - 4px)`,
+          transform: `translateX(${activeIndex * 100}%)`,
           backgroundColor: "var(--text-header)",
-          opacity: 0.9
+          opacity: 0.9,
         }}
       />
 
@@ -36,14 +40,17 @@ const ThemeToggle = () => {
         <button
           key={opt.id}
           onClick={() => setTheme(opt.id)}
+          suppressHydrationWarning
           className={`relative z-10 px-3 py-1 text-xs font-bold transition-colors duration-300 rounded-full flex items-center gap-1`}
-          style={{ 
+          style={{
             // Invert text color when background is behind it
-            color: theme === opt.id ? "var(--header-bg)" : "var(--text-header)" 
+            color: theme === opt.id ? "var(--header-bg)" : "var(--text-header)",
           }}
         >
           <span>{opt.icon}</span>
-          <span className="hidden md:inline uppercase tracking-tighter">{opt.label}</span>
+          <span className="hidden md:inline uppercase tracking-tighter">
+            {opt.label}
+          </span>
         </button>
       ))}
     </div>
