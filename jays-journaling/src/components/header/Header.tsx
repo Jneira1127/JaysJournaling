@@ -2,19 +2,58 @@
 import { Hamburger } from "../material-ui-components";
 import { useTheme } from "../../context/ThemeContext";
 
+type ThemeType = "light" | "dark" | "psycho";
+
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
-  const cycle = { light: "dark", dark: "psycho", psycho: "light" } as const;
-  const labels = { light: "☀️ Light", dark: "🌙 Dark", psycho: "🔴 Psycho" };
+
+  const options: { id: ThemeType; label: string; icon: string }[] = [
+    { id: "light", label: "Light", icon: "☀️" },
+    { id: "dark", label: "Dark", icon: "🌙" },
+    { id: "psycho", label: "Psycho", icon: "🔴" },
+  ];
+
+  const activeIndex = options.findIndex((o) => o.id === theme);
 
   return (
-    <button
-      onClick={() => setTheme(cycle[theme])}
-      className="absolute right-4 text-white border-2 px-3 py-1 rounded-full text-sm hover:opacity-80 cursor-pointer"
-      style={{ borderColor: "var(--text-header)", color: "var(--text-header)" }}
+    <div
+      suppressHydrationWarning
+      className="absolute right-4 flex p-1 rounded-full border-2 transition-all duration-300"
+      style={{
+        borderColor: "var(--text-header)",
+        background: "rgba(0,0,0,0.05)", // Subtle inner background
+      }}
     >
-      {labels[theme]}
-    </button>
+      {/* Sliding Background Highlight */}
+      <div
+        suppressHydrationWarning
+        className="absolute h-[calc(100%-8px)] transition-all duration-300 ease-out rounded-full shadow-sm"
+        style={{
+          width: `calc(33.33% - 4px)`,
+          transform: `translateX(${activeIndex * 100}%)`,
+          backgroundColor: "var(--text-header)",
+          opacity: 0.9,
+        }}
+      />
+
+      {options.map((opt) => (
+        <button
+          key={opt.id}
+          onClick={() => setTheme(opt.id)}
+          suppressHydrationWarning
+          className={`relative z-10 px-3 py-1 text-xs font-bold transition-colors duration-300 rounded-full flex items-center gap-1`}
+          style={{
+            // Invert text color when background is behind it
+            color: theme === opt.id ? "var(--header-bg)" : "var(--text-header)",
+          }}
+        >
+          <span>{opt.icon}</span>
+          <span className="hidden md:inline uppercase tracking-tighter">
+            {opt.label}
+          </span>
+        </button>
+      ))}
+    </div>
   );
 };
 
@@ -33,7 +72,7 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <div
-      className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50 overflow-visible"
+      className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50"
       style={{
         background: "var(--header-bg)",
         borderColor: "var(--header-border)",
@@ -49,7 +88,7 @@ const Header = ({
         />
       </div>
       <div
-        className="font-oi text-5xl text-white"
+        className="font-oi text-2xl md:text-5xl text-white"
         style={{ color: "var(--text-header)" }}
       >
         Jays Journaling App
