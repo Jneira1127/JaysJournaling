@@ -2,6 +2,7 @@
 import { Hamburger } from "../material-ui-components";
 import { useTheme } from "../../context/ThemeContext";
 import { useUI } from "@/src/context/UIContext";
+import { useEffect, useRef } from "react";
 
 type ThemeType = "light" | "dark" | "psycho";
 
@@ -56,7 +57,25 @@ const ThemeToggle = () => {
 
 const Header = () => {
   // Use UI Context instead of props
-  const { openBurger, setOpenBurger, closeAllSidebars } = useUI();
+  const { burgerRef, openBurger, setOpenBurger, sidebarRef, closeAllSidebars } =
+    useUI();
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        burgerRef &&
+        !burgerRef.current?.contains(event.target as Node) &&
+        sidebarRef &&
+        !sidebarRef.current?.contains(event.target as Node)
+      )
+        closeAllSidebars();
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [burgerRef, closeAllSidebars, sidebarRef]);
 
   return (
     <div
@@ -66,7 +85,7 @@ const Header = () => {
         borderColor: "var(--header-border)",
       }}
     >
-      <div className="absolute left-4">
+      <div ref={burgerRef} className="absolute left-4">
         <Hamburger
           onClick={() =>
             openBurger ? closeAllSidebars() : setOpenBurger(true)
