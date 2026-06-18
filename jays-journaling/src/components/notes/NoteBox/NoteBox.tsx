@@ -32,9 +32,9 @@ const NoteBox = ({ note }: { note: NoteType }) => {
         setIsMenuOpen(false);
     };
 
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("click", handleOutsideClick);
     };
   }, [isMenuOpen]);
 
@@ -77,7 +77,10 @@ const NoteBox = ({ note }: { note: NoteType }) => {
         </button>
 
         {isMenuOpen && (
-          <div className="absolute right-0 bottom-full bg-white shadow-xl z-20">
+          <div
+            className="absolute right-0 bottom-full bg-white shadow-xl z-20"
+            onClick={(e) => e.stopPropagation()}
+          >
             <DropdownItem
               onClick={(e) => {
                 e.stopPropagation();
