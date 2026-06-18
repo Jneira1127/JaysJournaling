@@ -1,9 +1,12 @@
 "use client";
 import { Hamburger } from "../material-ui-components";
 import { useTheme } from "../../context/ThemeContext";
+import { useUI } from "@/src/context/UIContext";
+import { useEffect, useRef } from "react";
 
 type ThemeType = "light" | "dark" | "psycho";
 
+// Keep this internal component here to fix the "Module Not Found" error
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
 
@@ -17,16 +20,13 @@ const ThemeToggle = () => {
 
   return (
     <div
-      suppressHydrationWarning
       className="absolute right-4 flex p-1 rounded-full border-2 transition-all duration-300"
       style={{
         borderColor: "var(--text-header)",
-        background: "rgba(0,0,0,0.05)", // Subtle inner background
+        background: "rgba(0,0,0,0.05)",
       }}
     >
-      {/* Sliding Background Highlight */}
       <div
-        suppressHydrationWarning
         className="absolute h-[calc(100%-8px)] transition-all duration-300 ease-out rounded-full shadow-sm"
         style={{
           width: `calc(33.33% - 4px)`,
@@ -40,10 +40,8 @@ const ThemeToggle = () => {
         <button
           key={opt.id}
           onClick={() => setTheme(opt.id)}
-          suppressHydrationWarning
           className={`relative z-10 px-3 py-1 text-xs font-bold transition-colors duration-300 rounded-full flex items-center gap-1`}
           style={{
-            // Invert text color when background is behind it
             color: theme === opt.id ? "var(--header-bg)" : "var(--text-header)",
           }}
         >
@@ -57,19 +55,28 @@ const ThemeToggle = () => {
   );
 };
 
-type HeaderProps = {
-  handleCloseBurger: () => void;
-  handleOpenBurger: (value: boolean) => void;
-  openBurger: boolean;
-  burgerRef: React.RefObject<HTMLDivElement | null>;
-};
+const Header = () => {
+  // Use UI Context instead of props
+  const { burgerRef, openBurger, setOpenBurger, sidebarRef, closeAllSidebars } =
+    useUI();
 
-const Header = ({
-  handleCloseBurger,
-  handleOpenBurger,
-  openBurger,
-  burgerRef,
-}: HeaderProps) => {
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        burgerRef &&
+        !burgerRef.current?.contains(event.target as Node) &&
+        sidebarRef &&
+        !sidebarRef.current?.contains(event.target as Node)
+      )
+        closeAllSidebars();
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [burgerRef, closeAllSidebars, sidebarRef]);
+
   return (
     <div
       className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50"
@@ -78,17 +85,17 @@ const Header = ({
         borderColor: "var(--header-border)",
       }}
     >
-      <div className="absolute left-4" ref={burgerRef}>
+      <div ref={burgerRef} className="absolute left-4">
         <Hamburger
           onClick={() =>
-            openBurger ? handleCloseBurger() : handleOpenBurger(true)
+            openBurger ? closeAllSidebars() : setOpenBurger(true)
           }
           className="relative text-lg cursor-pointer"
           sx={{ width: 60, height: 60, color: "var(--text-header)" }}
         />
       </div>
       <div
-        className="font-oi text-2xl md:text-5xl text-white"
+        className="font-oi text-2xl md:text-5xl"
         style={{ color: "var(--text-header)" }}
       >
         Jays Journaling App

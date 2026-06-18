@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Group {
+  id    Int     @id @default(autoincrement())
+  name  String
+  color String
+  notes Note[]
+}
+
+model Note {
+  id          Int     @id @default(autoincrement())
+  label       String  @default("Untitled")
+  text        String  @default("")
+  groupColor  String?
+  isSelected  Boolean @default(false)
+  
+  groupId     Int?
+  group       Group?   @relation(fields: [groupId], references: [id])
+}
