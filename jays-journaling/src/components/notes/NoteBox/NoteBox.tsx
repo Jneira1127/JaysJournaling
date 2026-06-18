@@ -78,10 +78,12 @@ const NoteBox = ({ note }: { note: NoteType }) => {
 
         {isMenuOpen && (
           <div
-            className="absolute right-0 bottom-full bg-white shadow-xl z-20"
+            className="absolute w-30 right-0 bottom-full shadow-xl z-20 rounded-3xl"
             onClick={(e) => e.stopPropagation()}
+            style={{ border: "var(--)" }}
           >
             <DropdownItem
+              className="rounded-xl"
               onClick={(e) => {
                 e.stopPropagation();
                 deleteSingleNote(note.id);
@@ -89,6 +91,24 @@ const NoteBox = ({ note }: { note: NoteType }) => {
             >
               DELETE
             </DropdownItem>
+            {/* <DropdownItem
+              className="rounded-xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSingleNote(note.id);
+              }}
+            >
+              GROUP
+            </DropdownItem>
+            <DropdownItem
+              className="rounded-xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSingleNote(note.id);
+              }}
+            >
+              RENAME
+            </DropdownItem> */}
           </div>
         )}
       </div>

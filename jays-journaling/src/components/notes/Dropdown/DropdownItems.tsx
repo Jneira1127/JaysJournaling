@@ -14,7 +14,9 @@ const DropdownItem = ({
 }: React.PropsWithChildren<IDropdownItemProps<HTMLButtonElement>>) => {
   return (
     <button
-      className={`w-full text-center text-white px-3 py-2 text-sm transition-colors bg-[#2E2E2E] hover:bg-[#444555] ${className}`}
+      className={`w-full text-center px-3 py-2 text-sm transition-colors font-rubik
+        bg-sidebar text-text-main hover:bg-sidebar-group-hover-bg 
+        border-b-2 border-sidebar-border last:border-b-0 pointer-cursor ${className}`}
       type="button"
       onClick={onClick}
       disabled={disabled}
