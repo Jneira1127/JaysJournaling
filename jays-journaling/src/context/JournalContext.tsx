@@ -3,13 +3,16 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { NoteType, GroupType, DbNote, DbGroup } from "@/src/app/types";
 import {
   createNoteAction,
+  createGroupAction,
   deleteNoteAction,
   updateNoteGroupAction,
 } from "@/src/app/action";
+import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
 
 interface JournalContextType {
   notes: NoteType[];
   groups: GroupType[];
+  addGroup: (name: string) => Promise<void>;
   addNote: () => Promise<void>;
   deleteSingleNote: (id: number) => Promise<void>;
   deleteSelectedNotes: () => Promise<void>;
@@ -33,7 +36,7 @@ export function JournalProvider({
   const [notes, setNotes] = useState<NoteType[]>(
     initialNotes.map((n) => ({ ...n, isSelected: false })),
   );
-  const [groups] = useState<GroupType[]>(
+  const [groups, setGroups] = useState<GroupType[]>(
     initialGroups.map((g) => ({
       ...g,
       notes: g.notes.map((n) => ({ ...n, isSelected: false })),
@@ -43,6 +46,11 @@ export function JournalProvider({
   const addNote = async () => {
     const newNote = await createNoteAction();
     setNotes((prev) => [...prev, { ...newNote, isSelected: false }]);
+  };
+
+  const addGroup = async (name: string) => {
+    const newGroup = await createGroupAction(name);
+    setGroups((prev) => [...prev, { ...newGroup, notes: [] }]);
   };
 
   const deleteSingleNote = async (id: number) => {
@@ -83,13 +91,14 @@ export function JournalProvider({
   return (
     <JournalContext.Provider
       value={{
-        notes,
-        groups,
+        addGroup,
         addNote,
-        deleteSingleNote,
         deleteSelectedNotes,
-        toggleNoteSelection,
+        deleteSingleNote,
+        groups,
         groupSelectedNotes,
+        notes,
+        toggleNoteSelection,
       }}
     >
       {children}

@@ -13,7 +13,7 @@ const Sidebar = () => {
     openGroups,
     setVisibleDelete,
     setIsAddingGroup,
-    sidebarRef
+    sidebarRef,
   } = useUI();
 
   return (
@@ -23,21 +23,13 @@ const Sidebar = () => {
       >
         <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-12 p-4">
           <AddNoteButton />
-
-          <DeleteNoteButton
-            onClick={() => {
-              setVisibleDelete(true);
-              // close burger when entering delete mode
-            }}
-          />
-
+          <DeleteNoteButton onClick={() => setVisibleDelete(true)} />
           <GroupedNotesButton
             onClick={() => {
               setOpenGroups(!openGroups);
               setIsAddingGroup(true);
             }}
           />
-
           <FilterNotesButton onClick={() => setOpenGroups(!openGroups)} />
         </div>
       </div>

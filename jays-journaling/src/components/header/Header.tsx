@@ -1,5 +1,5 @@
 "use client";
-import { Hamburger } from "../material-ui-components";
+import { Hamburger, Burger } from "../material-ui-components";
 import { useTheme } from "../../context/ThemeContext";
 import { useUI } from "@/src/context/UIContext";
 import { useEffect, useRef } from "react";
@@ -86,7 +86,7 @@ const Header = () => {
       }}
     >
       <div ref={burgerRef} className="absolute left-4">
-        <Hamburger
+        <Burger
           onClick={() =>
             openBurger ? closeAllSidebars() : setOpenBurger(true)
           }

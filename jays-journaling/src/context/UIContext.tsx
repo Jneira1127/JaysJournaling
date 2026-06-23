@@ -11,19 +11,21 @@ import React, {
 interface UIContextType {
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
-  openBurger: boolean;
-  setOpenBurger: (val: boolean) => void;
-  openGroups: boolean;
-  setOpenGroups: (val: boolean) => void;
-  visibleDelete: boolean;
-  setVisibleDelete: (val: boolean) => void;
-  visibleGrouping: boolean;
-  setVisibleGrouping: (val: boolean) => void;
-  selectedGroupId: number | null;
-  setSelectedGroupId: (id: number | null) => void;
-  sidebarRef: RefObject<HTMLDivElement | null>;
   isAddingGroup: boolean;
+  openBurger: boolean;
+  openGroups: boolean;
+  pendingGroupName: string;
+  selectedGroupId: number | null;
   setIsAddingGroup: (val: boolean) => void;
+  setOpenBurger: (val: boolean) => void;
+  setOpenGroups: (val: boolean) => void;
+  setPendingGroupName: (val: string) => void;
+  setSelectedGroupId: (id: number | null) => void;
+  setVisibleDelete: (val: boolean) => void;
+  setVisibleGrouping: (val: boolean) => void;
+  sidebarRef: RefObject<HTMLDivElement | null>;
+  visibleDelete: boolean;
+  visibleGrouping: boolean;
 }
 
 interface UIProviderProps {
@@ -40,6 +42,7 @@ export function UIProvider({ children }: UIProviderProps) {
   const [visibleGrouping, setVisibleGrouping] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [isAddingGroup, setIsAddingGroup] = useState(false);
+  const [pendingGroupName, setPendingGroupName] = useState("")
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const closeAllSidebars = () => {
@@ -52,20 +55,22 @@ export function UIProvider({ children }: UIProviderProps) {
     <UIContext.Provider
       value={{
         burgerRef,
-        openBurger,
-        setOpenBurger,
-        openGroups,
-        setOpenGroups,
-        visibleDelete,
-        setVisibleDelete,
-        visibleGrouping,
-        setVisibleGrouping,
-        selectedGroupId,
-        setSelectedGroupId,
-        sidebarRef,
-        isAddingGroup,
-        setIsAddingGroup,
         closeAllSidebars,
+        isAddingGroup,
+        openBurger,
+        openGroups,
+        pendingGroupName,
+        selectedGroupId,
+        setIsAddingGroup,
+        setOpenBurger,
+        setOpenGroups,
+        setPendingGroupName,
+        setSelectedGroupId,
+        setVisibleDelete,
+        setVisibleGrouping,
+        sidebarRef,
+        visibleDelete,
+        visibleGrouping,
       }}
     >
       {children}
