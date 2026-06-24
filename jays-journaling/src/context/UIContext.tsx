@@ -10,11 +10,13 @@ import React, {
 
 interface UIContextType {
   activeActions: boolean;
-  activeFilterId: number | null,
+  activeFilterId: number | null;
   activeSorting: boolean;
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
   editingGroupName: boolean;
+  headerColor: string;
+  headerTitle: string;
   isAddingGroup: boolean;
   openBurger: boolean;
   openGroups: boolean;
@@ -24,6 +26,8 @@ interface UIContextType {
   setActiveFilterId: (id: number | null) => void;
   setActiveSorting: (val: boolean) => void;
   setEditingGroupName: (val: boolean) => void;
+  setHeaderColor: (val: string) => void;
+  setHeaderTitle: (val: string) => void;
   setIsAddingGroup: (val: boolean) => void;
   setOpenBurger: (val: boolean) => void;
   setOpenGroups: (val: boolean) => void;
@@ -48,14 +52,16 @@ export function UIProvider({ children }: UIProviderProps) {
   const [activeSorting, setActiveSorting] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
   const [editingGroupName, setEditingGroupName] = useState(false);
+  const [headerColor, setHeaderColor] = useState("var(--header-bg)");
+  const [headerTitle, setHeaderTitle] = useState("Jays Journaling App");
+  const [isAddingGroup, setIsAddingGroup] = useState(false);
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
+  const [pendingGroupName, setPendingGroupName] = useState("");
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [visibleGrouping, setVisibleGrouping] = useState(false);
-  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
-  const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [pendingGroupName, setPendingGroupName] = useState("");
-  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const closeAllSidebars = () => {
     setOpenBurger(false);
@@ -71,6 +77,8 @@ export function UIProvider({ children }: UIProviderProps) {
         burgerRef,
         closeAllSidebars,
         editingGroupName,
+        headerColor,
+        headerTitle,
         isAddingGroup,
         openBurger,
         openGroups,
@@ -80,6 +88,8 @@ export function UIProvider({ children }: UIProviderProps) {
         setActiveFilterId,
         setActiveSorting,
         setEditingGroupName,
+        setHeaderColor,
+        setHeaderTitle,
         setIsAddingGroup,
         setOpenBurger,
         setOpenGroups,

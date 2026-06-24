@@ -20,6 +20,7 @@ const GroupSidebar = () => {
     pendingGroupName,
     setActiveFilterId,
     setEditingGroupName,
+    setHeaderTitle,
     setPendingGroupName,
     setSelectedGroupId,
     setVisibleGrouping,
@@ -39,6 +40,7 @@ const GroupSidebar = () => {
             className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg"
             onClick={() => {
               setActiveFilterId(null);
+              setHeaderTitle("Jays Journaling App");
               closeAllSidebars();
             }}
           >
@@ -59,6 +61,7 @@ const GroupSidebar = () => {
                 setVisibleGrouping(true);
               } else {
                 setActiveFilterId(group.id);
+                setHeaderTitle(group.name);
               }
               closeAllSidebars();
             }}

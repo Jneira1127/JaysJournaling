@@ -61,6 +61,8 @@ const Header = () => {
     activeActions,
     activeSorting,
     burgerRef,
+    headerColor,
+    headerTitle,
     openBurger,
     setActiveActions,
     setActiveSorting,
@@ -82,7 +84,7 @@ const Header = () => {
           setActiveActions(false);
           setEditingGroupName(false);
         } else if (activeSorting) setActiveSorting(false);
-        
+
         closeAllSidebars();
       }
     };
@@ -114,7 +116,7 @@ const Header = () => {
         className="font-oi text-2xl md:text-5xl"
         style={{ color: "var(--text-header)" }}
       >
-        Jays Journaling App
+        {headerTitle}
       </div>
       <ThemeToggle />
     </div>
