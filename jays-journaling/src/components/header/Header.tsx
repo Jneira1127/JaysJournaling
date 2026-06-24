@@ -60,6 +60,7 @@ const Header = () => {
   const {
     burgerRef,
     openBurger,
+    setEditingGroupName,
     setOpenBurger,
     setActiveActions,
     sidebarRef,
@@ -75,6 +76,7 @@ const Header = () => {
         !sidebarRef.current?.contains(event.target as Node)
       ) {
         setActiveActions(false);
+        setEditingGroupName(false);
         closeAllSidebars();
       }
     };

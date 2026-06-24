@@ -9,15 +9,17 @@ import React, {
 } from "react";
 
 interface UIContextType {
-  activeActions: boolean
+  activeActions: boolean;
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
+  editingGroupName: boolean;
   isAddingGroup: boolean;
   openBurger: boolean;
   openGroups: boolean;
   pendingGroupName: string;
   selectedGroupId: number | null;
   setActiveActions: (val: boolean) => void;
+  setEditingGroupName: (val: boolean) => void;
   setIsAddingGroup: (val: boolean) => void;
   setOpenBurger: (val: boolean) => void;
   setOpenGroups: (val: boolean) => void;
@@ -37,15 +39,16 @@ interface UIProviderProps {
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: UIProviderProps) {
-  const [activeActions, setActiveActions] = useState(false)
+  const [activeActions, setActiveActions] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
+  const [editingGroupName, setEditingGroupName] = useState(false);
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [visibleGrouping, setVisibleGrouping] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [pendingGroupName, setPendingGroupName] = useState("")
+  const [pendingGroupName, setPendingGroupName] = useState("");
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const closeAllSidebars = () => {
@@ -53,19 +56,20 @@ export function UIProvider({ children }: UIProviderProps) {
     setOpenGroups(false);
   };
 
-
   return (
     <UIContext.Provider
       value={{
         activeActions,
         burgerRef,
         closeAllSidebars,
+        editingGroupName,
         isAddingGroup,
         openBurger,
         openGroups,
         pendingGroupName,
         selectedGroupId,
         setActiveActions,
+        setEditingGroupName,
         setIsAddingGroup,
         setOpenBurger,
         setOpenGroups,

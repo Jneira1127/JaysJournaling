@@ -11,16 +11,17 @@ const GroupSidebar = () => {
   const {
     activeActions,
     closeAllSidebars,
+    editingGroupName,
     isAddingGroup,
     openBurger,
     openGroups,
     pendingGroupName,
+    setEditingGroupName,
     setPendingGroupName,
     setSelectedGroupId,
     setVisibleGrouping,
   } = useUI();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [editingGroupName, setEditingGroupName] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const ellipsesRef = useRef<HTMLButtonElement | null>(null);
 
