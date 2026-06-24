@@ -58,11 +58,14 @@ const ThemeToggle = () => {
 const Header = () => {
   // Use UI Context instead of props
   const {
+    activeActions,
+    activeSorting,
     burgerRef,
     openBurger,
+    setActiveActions,
+    setActiveSorting,
     setEditingGroupName,
     setOpenBurger,
-    setActiveActions,
     sidebarRef,
     closeAllSidebars,
   } = useUI();
@@ -75,8 +78,11 @@ const Header = () => {
         sidebarRef &&
         !sidebarRef.current?.contains(event.target as Node)
       ) {
-        setActiveActions(false);
-        setEditingGroupName(false);
+        if (activeActions) {
+          setActiveActions(false);
+          setEditingGroupName(false);
+        } else if (activeSorting) setActiveSorting(false);
+        
         closeAllSidebars();
       }
     };

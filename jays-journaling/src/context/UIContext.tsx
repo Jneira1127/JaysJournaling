@@ -10,6 +10,7 @@ import React, {
 
 interface UIContextType {
   activeActions: boolean;
+  activeSorting: boolean;
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
   editingGroupName: boolean;
@@ -19,6 +20,7 @@ interface UIContextType {
   pendingGroupName: string;
   selectedGroupId: number | null;
   setActiveActions: (val: boolean) => void;
+  setActiveSorting: (val: boolean) => void;
   setEditingGroupName: (val: boolean) => void;
   setIsAddingGroup: (val: boolean) => void;
   setOpenBurger: (val: boolean) => void;
@@ -40,6 +42,7 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: UIProviderProps) {
   const [activeActions, setActiveActions] = useState(false);
+  const [activeSorting, setActiveSorting] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
   const [editingGroupName, setEditingGroupName] = useState(false);
   const [openBurger, setOpenBurger] = useState(false);
@@ -60,6 +63,7 @@ export function UIProvider({ children }: UIProviderProps) {
     <UIContext.Provider
       value={{
         activeActions,
+        activeSorting,
         burgerRef,
         closeAllSidebars,
         editingGroupName,
@@ -69,6 +73,7 @@ export function UIProvider({ children }: UIProviderProps) {
         pendingGroupName,
         selectedGroupId,
         setActiveActions,
+        setActiveSorting,
         setEditingGroupName,
         setIsAddingGroup,
         setOpenBurger,

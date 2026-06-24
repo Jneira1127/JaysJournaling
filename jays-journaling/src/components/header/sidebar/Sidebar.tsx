@@ -11,6 +11,7 @@ const Sidebar = () => {
     openBurger,
     openGroups,
     setActiveActions,
+    setActiveSorting,
     setOpenGroups,
     setVisibleDelete,
     sidebarRef,
@@ -26,14 +27,16 @@ const Sidebar = () => {
           <DeleteNoteButton onClick={() => setVisibleDelete(true)} />
           <GroupedNotesButton
             onClick={() => {
-              setOpenGroups(!openGroups);
               setActiveActions(true);
+              setActiveSorting(false);
+              setOpenGroups(!openGroups);
             }}
           />
           <FilterNotesButton
             onClick={() => {
-              setOpenGroups(!openGroups);
               setActiveActions(false);
+              setActiveSorting(true);
+              setOpenGroups(!openGroups);
             }}
           />
         </div>

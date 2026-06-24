@@ -5,11 +5,13 @@ import { useRef } from "react";
 import { Ellipses } from "../../material-ui-components";
 import { useState } from "react";
 import DropdownItem from "../../notes/Dropdown/DropdownItems";
+import { div } from "framer-motion/client";
 
 const GroupSidebar = () => {
   const { addGroup, groups } = useJournal();
   const {
     activeActions,
+    activeSorting,
     closeAllSidebars,
     editingGroupName,
     isAddingGroup,
@@ -31,6 +33,11 @@ const GroupSidebar = () => {
     <div className="w-[15vw] flex flex-col max-h-[90vh] shadow-xl transition-all bg-sidebar border-r-4 border-sidebar-border text-text-main overflow-hidden">
       {/* Scrollable groups section */}
       <div className="flex flex-col items-center overflow-y-auto flex-1 min-h-0">
+        {activeSorting && (
+          <div className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg">
+            DEFAULT
+          </div>
+        )}
         {groups.map((group) => (
           <div
             key={group.id}
@@ -40,9 +47,13 @@ const GroupSidebar = () => {
               setIsMenuOpen(false); // close menu when leaving row
             }}
             onClick={() => {
-              setSelectedGroupId(group.id);
-              setVisibleGrouping(true);
-              closeAllSidebars();
+              if (activeActions) {
+                setSelectedGroupId(group.id);
+                setVisibleGrouping(true);
+                closeAllSidebars();
+              } else {
+                closeAllSidebars();
+              }
             }}
             className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg"
           >
