@@ -21,6 +21,7 @@ const GroupSidebar = () => {
     setActiveFilterId,
     setEditingGroupName,
     setHeaderTitle,
+    setHeaderColor,
     setPendingGroupName,
     setSelectedGroupId,
     setVisibleGrouping,
@@ -41,6 +42,7 @@ const GroupSidebar = () => {
             onClick={() => {
               setActiveFilterId(null);
               setHeaderTitle("Jays Journaling App");
+              setHeaderColor("var(--header-bg)");
               closeAllSidebars();
             }}
           >
@@ -61,6 +63,7 @@ const GroupSidebar = () => {
                 setVisibleGrouping(true);
               } else {
                 setActiveFilterId(group.id);
+                setHeaderColor(group.color);
                 setHeaderTitle(group.name);
               }
               closeAllSidebars();
