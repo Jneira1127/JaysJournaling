@@ -99,12 +99,12 @@ const Header = () => {
     <div
       className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50"
       style={{
-        background: "var(--header-bg)",
+        background: headerColor,
         borderColor: "var(--header-border)",
       }}
     >
       <div ref={burgerRef} className="absolute left-4">
-        <Burger
+        <Hamburger
           onClick={() =>
             openBurger ? closeAllSidebars() : setOpenBurger(true)
           }
