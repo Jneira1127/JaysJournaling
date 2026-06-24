@@ -8,6 +8,9 @@ import GroupSidebar from "./GroupSidebar";
 
 const Sidebar = () => {
   const {
+    activeActions,
+    activeSorting,
+    closeAllSidebars,
     openBurger,
     openGroups,
     setActiveActions,
@@ -17,6 +20,32 @@ const Sidebar = () => {
     sidebarRef,
   } = useUI();
 
+  const handleGroupClick = () => {
+    if (!openGroups) {
+      // If closed, open it in Group mode
+      setActiveActions(true);
+      setActiveSorting(false);
+      setOpenGroups(true);
+    } else if (activeSorting) {
+      // If open but in Filter mode, switch to Group mode stay open
+      setActiveActions(true);
+      setActiveSorting(false);
+    } else setOpenGroups(false);
+  };
+
+  const handleFilterClick = () => {
+    if (!openGroups) {
+      // If closed, open it in Filter mode
+      setActiveActions(false);
+      setActiveSorting(true);
+      setOpenGroups(true);
+    } else if (activeActions) {
+      // If open but in Group mode, switch to Filter mode and stay open
+      setActiveActions(false);
+      setActiveSorting(true);
+    } else setOpenGroups(false);
+  };
+
   return (
     <div className="flex overflow-hidden" ref={sidebarRef}>
       <div
@@ -24,21 +53,14 @@ const Sidebar = () => {
       >
         <div className="sticky top-16 h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-12 p-4">
           <AddNoteButton />
-          <DeleteNoteButton onClick={() => setVisibleDelete(true)} />
-          <GroupedNotesButton
+          <DeleteNoteButton
             onClick={() => {
-              setActiveActions(true);
-              setActiveSorting(false);
-              setOpenGroups(!openGroups);
+              closeAllSidebars();
+              setVisibleDelete(true);
             }}
           />
-          <FilterNotesButton
-            onClick={() => {
-              setActiveActions(false);
-              setActiveSorting(true);
-              setOpenGroups(!openGroups);
-            }}
-          />
+          <GroupedNotesButton onClick={handleGroupClick} />
+          <FilterNotesButton onClick={handleFilterClick} />
         </div>
       </div>
       <GroupSidebar />

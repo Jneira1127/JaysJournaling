@@ -18,6 +18,7 @@ const GroupSidebar = () => {
     openBurger,
     openGroups,
     pendingGroupName,
+    setActiveFilterId,
     setEditingGroupName,
     setPendingGroupName,
     setSelectedGroupId,
@@ -34,7 +35,13 @@ const GroupSidebar = () => {
       {/* Scrollable groups section */}
       <div className="flex flex-col items-center overflow-y-auto flex-1 min-h-0">
         {activeSorting && (
-          <div className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg">
+          <div
+            className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg"
+            onClick={() => {
+              setActiveFilterId(null);
+              closeAllSidebars();
+            }}
+          >
             DEFAULT
           </div>
         )}
@@ -50,10 +57,10 @@ const GroupSidebar = () => {
               if (activeActions) {
                 setSelectedGroupId(group.id);
                 setVisibleGrouping(true);
-                closeAllSidebars();
               } else {
-                closeAllSidebars();
+                setActiveFilterId(group.id);
               }
+              closeAllSidebars();
             }}
             className="relative group flex items-center justify-between font-rubik text-xl text-left border-b-2 w-full pt-3 pb-3 pl-2 pr-2 cursor-pointer hover:bg-sidebar-group-hover-bg"
           >
