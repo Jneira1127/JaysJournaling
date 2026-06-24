@@ -9,6 +9,7 @@ import React, {
 } from "react";
 
 interface UIContextType {
+  activeActions: boolean
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
   isAddingGroup: boolean;
@@ -16,6 +17,7 @@ interface UIContextType {
   openGroups: boolean;
   pendingGroupName: string;
   selectedGroupId: number | null;
+  setActiveActions: (val: boolean) => void;
   setIsAddingGroup: (val: boolean) => void;
   setOpenBurger: (val: boolean) => void;
   setOpenGroups: (val: boolean) => void;
@@ -35,6 +37,7 @@ interface UIProviderProps {
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: UIProviderProps) {
+  const [activeActions, setActiveActions] = useState(false)
   const burgerRef = useRef<HTMLDivElement>(null);
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
@@ -54,6 +57,7 @@ export function UIProvider({ children }: UIProviderProps) {
   return (
     <UIContext.Provider
       value={{
+        activeActions,
         burgerRef,
         closeAllSidebars,
         isAddingGroup,
@@ -61,6 +65,7 @@ export function UIProvider({ children }: UIProviderProps) {
         openGroups,
         pendingGroupName,
         selectedGroupId,
+        setActiveActions,
         setIsAddingGroup,
         setOpenBurger,
         setOpenGroups,

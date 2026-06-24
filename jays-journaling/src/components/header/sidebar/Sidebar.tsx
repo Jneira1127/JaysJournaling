@@ -9,10 +9,10 @@ import GroupSidebar from "./GroupSidebar";
 const Sidebar = () => {
   const {
     openBurger,
-    setOpenGroups,
     openGroups,
+    setActiveActions,
+    setOpenGroups,
     setVisibleDelete,
-    setIsAddingGroup,
     sidebarRef,
   } = useUI();
 
@@ -27,10 +27,15 @@ const Sidebar = () => {
           <GroupedNotesButton
             onClick={() => {
               setOpenGroups(!openGroups);
-              setIsAddingGroup(true);
+              setActiveActions(true);
             }}
           />
-          <FilterNotesButton onClick={() => setOpenGroups(!openGroups)} />
+          <FilterNotesButton
+            onClick={() => {
+              setOpenGroups(!openGroups);
+              setActiveActions(false);
+            }}
+          />
         </div>
       </div>
       <GroupSidebar />
