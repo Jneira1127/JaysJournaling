@@ -58,10 +58,16 @@ const ThemeToggle = () => {
 const Header = () => {
   // Use UI Context instead of props
   const {
+    activeActions,
+    activeSorting,
     burgerRef,
+    headerColor,
+    headerTitle,
     openBurger,
-    setOpenBurger,
     setActiveActions,
+    setActiveSorting,
+    setEditingGroupName,
+    setOpenBurger,
     sidebarRef,
     closeAllSidebars,
   } = useUI();
@@ -74,7 +80,11 @@ const Header = () => {
         sidebarRef &&
         !sidebarRef.current?.contains(event.target as Node)
       ) {
-        setActiveActions(false);
+        if (activeActions) {
+          setActiveActions(false);
+          setEditingGroupName(false);
+        } else if (activeSorting) setActiveSorting(false);
+
         closeAllSidebars();
       }
     };
@@ -89,12 +99,12 @@ const Header = () => {
     <div
       className="relative flex justify-center items-center h-30 border-b-4 min-h-[10vh] min-w-[100vw] sticky top-0 z-50"
       style={{
-        background: "var(--header-bg)",
+        background: headerColor,
         borderColor: "var(--header-border)",
       }}
     >
       <div ref={burgerRef} className="absolute left-4">
-        <Burger
+        <Hamburger
           onClick={() =>
             openBurger ? closeAllSidebars() : setOpenBurger(true)
           }
@@ -106,7 +116,7 @@ const Header = () => {
         className="font-oi text-2xl md:text-5xl"
         style={{ color: "var(--text-header)" }}
       >
-        Jays Journaling App
+        {headerTitle}
       </div>
       <ThemeToggle />
     </div>

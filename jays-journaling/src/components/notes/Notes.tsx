@@ -7,6 +7,10 @@ import GroupNoteButton from "./GroupingButton/GroupNoteButton";
 
 const Notes = () => {
   const { notes } = useJournal();
+  const { activeFilterId } = useUI();
+  const filteredNotes = activeFilterId
+    ? notes.filter((note) => note.groupId === activeFilterId)
+    : notes;
 
   return (
     <div className="flex flex-1 overflow-y-auto min-w-0 bg-main-bg">
@@ -14,7 +18,7 @@ const Notes = () => {
         <DeleteNoteControls />
         <GroupNoteButton />
 
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <NoteBox key={note.id} note={note} />
         ))}
       </div>
