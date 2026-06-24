@@ -9,21 +9,25 @@ import React, {
 } from "react";
 
 interface UIContextType {
+  activeActions: boolean
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
-  openBurger: boolean;
-  setOpenBurger: (val: boolean) => void;
-  openGroups: boolean;
-  setOpenGroups: (val: boolean) => void;
-  visibleDelete: boolean;
-  setVisibleDelete: (val: boolean) => void;
-  visibleGrouping: boolean;
-  setVisibleGrouping: (val: boolean) => void;
-  selectedGroupId: number | null;
-  setSelectedGroupId: (id: number | null) => void;
-  sidebarRef: RefObject<HTMLDivElement | null>;
   isAddingGroup: boolean;
+  openBurger: boolean;
+  openGroups: boolean;
+  pendingGroupName: string;
+  selectedGroupId: number | null;
+  setActiveActions: (val: boolean) => void;
   setIsAddingGroup: (val: boolean) => void;
+  setOpenBurger: (val: boolean) => void;
+  setOpenGroups: (val: boolean) => void;
+  setPendingGroupName: (val: string) => void;
+  setSelectedGroupId: (id: number | null) => void;
+  setVisibleDelete: (val: boolean) => void;
+  setVisibleGrouping: (val: boolean) => void;
+  sidebarRef: RefObject<HTMLDivElement | null>;
+  visibleDelete: boolean;
+  visibleGrouping: boolean;
 }
 
 interface UIProviderProps {
@@ -33,6 +37,7 @@ interface UIProviderProps {
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: UIProviderProps) {
+  const [activeActions, setActiveActions] = useState(false)
   const burgerRef = useRef<HTMLDivElement>(null);
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
@@ -40,6 +45,7 @@ export function UIProvider({ children }: UIProviderProps) {
   const [visibleGrouping, setVisibleGrouping] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [isAddingGroup, setIsAddingGroup] = useState(false);
+  const [pendingGroupName, setPendingGroupName] = useState("")
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const closeAllSidebars = () => {
@@ -51,21 +57,25 @@ export function UIProvider({ children }: UIProviderProps) {
   return (
     <UIContext.Provider
       value={{
+        activeActions,
         burgerRef,
-        openBurger,
-        setOpenBurger,
-        openGroups,
-        setOpenGroups,
-        visibleDelete,
-        setVisibleDelete,
-        visibleGrouping,
-        setVisibleGrouping,
-        selectedGroupId,
-        setSelectedGroupId,
-        sidebarRef,
-        isAddingGroup,
-        setIsAddingGroup,
         closeAllSidebars,
+        isAddingGroup,
+        openBurger,
+        openGroups,
+        pendingGroupName,
+        selectedGroupId,
+        setActiveActions,
+        setIsAddingGroup,
+        setOpenBurger,
+        setOpenGroups,
+        setPendingGroupName,
+        setSelectedGroupId,
+        setVisibleDelete,
+        setVisibleGrouping,
+        sidebarRef,
+        visibleDelete,
+        visibleGrouping,
       }}
     >
       {children}

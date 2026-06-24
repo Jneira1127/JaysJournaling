@@ -54,8 +54,8 @@ const NoteBox = ({ note }: { note: NoteType }) => {
       )}
 
       <div className="h-44 flex items-center justify-center p-4 text-text-card overflow-hidden">
-        <p className="flex text-center justify-center text-sm line-clamp-6">
-          {note.text.slice(0, 303) || "Empty Page"}
+        <p className="text-center text-sm line-clamp-6 whitespace-pre-wrap">
+          {note.text || "Empty Page"}
         </p>
       </div>
 
@@ -91,7 +91,7 @@ const NoteBox = ({ note }: { note: NoteType }) => {
             >
               DELETE
             </DropdownItem>
-            {/* <DropdownItem
+            <DropdownItem
               className="rounded-xl"
               onClick={(e) => {
                 e.stopPropagation();
@@ -108,7 +108,16 @@ const NoteBox = ({ note }: { note: NoteType }) => {
               }}
             >
               RENAME
-            </DropdownItem> */}
+            </DropdownItem>
+            <DropdownItem
+              className="rounded-xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSingleNote(note.id);
+              }}
+            >
+              EXILE
+            </DropdownItem>
           </div>
         )}
       </div>

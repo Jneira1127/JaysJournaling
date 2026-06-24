@@ -1,5 +1,5 @@
 "use client";
-import { Hamburger } from "../material-ui-components";
+import { Hamburger, Burger } from "../material-ui-components";
 import { useTheme } from "../../context/ThemeContext";
 import { useUI } from "@/src/context/UIContext";
 import { useEffect, useRef } from "react";
@@ -46,7 +46,7 @@ const ThemeToggle = () => {
           }}
         >
           <span>{opt.icon}</span>
-          <span className="hidden md:inline uppercase tracking-tighter">
+          <span className="hidden md:inline uppercase tracking-tighter cursor-pointer">
             {opt.label}
           </span>
         </button>
@@ -57,8 +57,14 @@ const ThemeToggle = () => {
 
 const Header = () => {
   // Use UI Context instead of props
-  const { burgerRef, openBurger, setOpenBurger, sidebarRef, closeAllSidebars } =
-    useUI();
+  const {
+    burgerRef,
+    openBurger,
+    setOpenBurger,
+    setActiveActions,
+    sidebarRef,
+    closeAllSidebars,
+  } = useUI();
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -67,8 +73,10 @@ const Header = () => {
         !burgerRef.current?.contains(event.target as Node) &&
         sidebarRef &&
         !sidebarRef.current?.contains(event.target as Node)
-      )
+      ) {
+        setActiveActions(false);
         closeAllSidebars();
+      }
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
@@ -86,7 +94,7 @@ const Header = () => {
       }}
     >
       <div ref={burgerRef} className="absolute left-4">
-        <Hamburger
+        <Burger
           onClick={() =>
             openBurger ? closeAllSidebars() : setOpenBurger(true)
           }
