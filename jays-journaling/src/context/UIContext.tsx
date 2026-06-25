@@ -22,6 +22,7 @@ interface UIContextType {
   openBurger: boolean;
   openGroups: boolean;
   pendingGroupName: string;
+  pendingGroupColor: string;
   selectedGroupId: number | null;
   setActiveActions: (val: boolean) => void;
   setActiveFilterId: (id: number | null) => void;
@@ -34,6 +35,7 @@ interface UIContextType {
   setOpenBurger: (val: boolean) => void;
   setOpenGroups: (val: boolean) => void;
   setPendingGroupName: (val: string) => void;
+  setPendingGroupColor: (val: string) => void;
   setSelectedGroupId: (id: number | null) => void;
   setVisibleDelete: (val: boolean) => void;
   setVisibleGrouping: (val: boolean) => void;
@@ -61,6 +63,7 @@ export function UIProvider({ children }: UIProviderProps) {
   const [openBurger, setOpenBurger] = useState(false);
   const [openGroups, setOpenGroups] = useState(false);
   const [pendingGroupName, setPendingGroupName] = useState("");
+  const [pendingGroupColor, setPendingGroupColor] = useState("");
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -87,6 +90,7 @@ export function UIProvider({ children }: UIProviderProps) {
         openBurger,
         openGroups,
         pendingGroupName,
+        pendingGroupColor,
         selectedGroupId,
         setActiveActions,
         setActiveFilterId,
@@ -99,6 +103,7 @@ export function UIProvider({ children }: UIProviderProps) {
         setOpenBurger,
         setOpenGroups,
         setPendingGroupName,
+        setPendingGroupColor,
         setSelectedGroupId,
         setVisibleDelete,
         setVisibleGrouping,

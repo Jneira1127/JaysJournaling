@@ -6,18 +6,20 @@ import {
   createGroupAction,
   deleteNoteAction,
   updateNoteGroupAction,
+  editGroup,
 } from "@/src/app/action";
 import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
 
 interface JournalContextType {
   notes: NoteType[];
   groups: GroupType[];
-  addGroup: (name: string) => Promise<void>;
+  addGroup: (name: string, color: string) => Promise<void>;
   addNote: () => Promise<void>;
   deleteSingleNote: (id: number) => Promise<void>;
   deleteSelectedNotes: () => Promise<void>;
   groupSelectedNotes: (groupId: number) => Promise<void>;
   toggleNoteSelection: (id: number) => void;
+  updateGroup: (groupId: number, name: string, color: string) => Promise<void>;
 }
 
 interface JournalProviderProps {
@@ -48,8 +50,8 @@ export function JournalProvider({
     setNotes((prev) => [...prev, { ...newNote, isSelected: false }]);
   };
 
-  const addGroup = async (name: string) => {
-    const newGroup = await createGroupAction(name);
+  const addGroup = async (name: string, color: string) => {
+    const newGroup = await createGroupAction(name, color);
     setGroups((prev) => [...prev, { ...newGroup, notes: [] }]);
   };
 
@@ -88,6 +90,13 @@ export function JournalProvider({
     );
   };
 
+  const updateGroup = async (groupId: number, name: string, color: string) => {
+    await editGroup(name, color, groupId);
+    setGroups((prev) =>
+      prev.map((g) => (g.id === groupId ? { ...g, name, color } : g)),
+    );
+  };
+
   return (
     <JournalContext.Provider
       value={{
@@ -99,6 +108,7 @@ export function JournalProvider({
         groupSelectedNotes,
         notes,
         toggleNoteSelection,
+        updateGroup,
       }}
     >
       {children}

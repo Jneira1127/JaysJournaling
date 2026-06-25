@@ -48,10 +48,24 @@ export async function updateNoteGroupAction(
 }
 
 // GROUPS SECTION
-export async function createGroupAction(name: string) {
+export async function createGroupAction(name: string, color: string) {
   const newGroup = await prisma.group.create({
-    data: { name: name, color: "#ffffff" },
+    data: { name, color },
   });
   revalidatePath("/");
   return newGroup;
+}
+
+export async function editGroup(
+  name: string,
+  color: string,
+  groupId: number,
+) {
+  const updateGroup = await prisma.group.update({
+    where: { id: groupId },
+    data: { name, color },
+  });
+
+  revalidatePath("/");
+  return updateGroup;
 }

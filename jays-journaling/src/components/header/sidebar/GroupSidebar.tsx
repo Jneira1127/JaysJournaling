@@ -18,12 +18,14 @@ const GroupSidebar = () => {
     openBurger,
     openGroups,
     pendingGroupName,
+    pendingGroupColor,
     setActiveFilterId,
     setActiveGroupEditing,
     setEditingGroupName,
     setHeaderTitle,
     setHeaderColor,
     setPendingGroupName,
+    setPendingGroupColor,
     setSelectedGroupId,
     setVisibleGrouping,
   } = useUI();
@@ -99,6 +101,7 @@ const GroupSidebar = () => {
                   onClick={(e) => {
                     e.stopPropagation();
                     setActiveGroupEditing(true);
+                    setSelectedGroupId(group.id);
                   }}
                 >
                   EDIT
@@ -126,7 +129,7 @@ const GroupSidebar = () => {
             onChange={(e) => setPendingGroupName(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                addGroup(pendingGroupName);
+                addGroup(pendingGroupName, pendingGroupColor);
                 setEditingGroupName(false);
                 setPendingGroupName("");
               }

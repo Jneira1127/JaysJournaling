@@ -6,9 +6,23 @@
 //6. Add in a X out button to close the window and not save anything
 
 import { useUI } from "@/src/context/UIContext";
+import { useJournal } from "@/src/context/JournalContext";
+import { editGroup } from "@/src/app/action";
+import { useState } from "react";
+
 
 const EditPopup = () => {
-  const { setActiveGroupEditing } = useUI();
+  const { setActiveGroupEditing, selectedGroupId } = useUI();
+  const { groups, updateGroup } = useJournal();
+  const activeGroup = groups.find((g) => g.id === selectedGroupId);
+  const [name, setName] = useState(activeGroup!.name);
+  const [color, setColor] = useState(activeGroup!.color);
+
+  const handleApply = async () => {
+    if (!activeGroup) return;
+    await updateGroup(activeGroup!.id, name, color);
+    setActiveGroupEditing(false);
+  };
 
   return (
     <div className="fixed inset-0 top-[10vh] z-40 flex items-center justify-center">
@@ -20,7 +34,11 @@ const EditPopup = () => {
       >
         {/* Header: title centered, X in top right */}
         <div className="relative flex items-center justify-center pt-4 px-4">
-          <input className="text-center h-10" placeholder="Group Title" />
+          <input
+            className="text-center h-10"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <button
             className="absolute right-4 text-lg font-bold cursor-pointer"
             onClick={() => setActiveGroupEditing(false)}
@@ -36,7 +54,13 @@ const EditPopup = () => {
 
         {/* Footer: Apply and Cancel centered at bottom */}
         <div className="flex items-center justify-center gap-4 pb-4">
-          <button className="cursor-pointer border-2 border-black rounded-lg p-3">
+          <button
+            className="cursor-pointer border-2 border-black rounded-lg p-3"
+            onClick={() => {
+              handleApply();
+              setActiveGroupEditing(false);
+            }}
+          >
             APPLY
           </button>
           <button
