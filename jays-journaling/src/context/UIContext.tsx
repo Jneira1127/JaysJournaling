@@ -11,6 +11,7 @@ import React, {
 interface UIContextType {
   activeActions: boolean;
   activeFilterId: number | null;
+  activeGroupEditing: boolean;
   activeSorting: boolean;
   burgerRef: RefObject<HTMLDivElement | null>;
   closeAllSidebars: () => void;
@@ -24,6 +25,7 @@ interface UIContextType {
   selectedGroupId: number | null;
   setActiveActions: (val: boolean) => void;
   setActiveFilterId: (id: number | null) => void;
+  setActiveGroupEditing: (val: boolean) => void;
   setActiveSorting: (val: boolean) => void;
   setEditingGroupName: (val: boolean) => void;
   setHeaderColor: (val: string) => void;
@@ -49,6 +51,7 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 export function UIProvider({ children }: UIProviderProps) {
   const [activeActions, setActiveActions] = useState(false);
   const [activeFilterId, setActiveFilterId] = useState<number | null>(null);
+  const [activeGroupEditing, setActiveGroupEditing] = useState(false);
   const [activeSorting, setActiveSorting] = useState(false);
   const burgerRef = useRef<HTMLDivElement>(null);
   const [editingGroupName, setEditingGroupName] = useState(false);
@@ -73,6 +76,7 @@ export function UIProvider({ children }: UIProviderProps) {
       value={{
         activeActions,
         activeFilterId,
+        activeGroupEditing,
         activeSorting,
         burgerRef,
         closeAllSidebars,
@@ -86,6 +90,7 @@ export function UIProvider({ children }: UIProviderProps) {
         selectedGroupId,
         setActiveActions,
         setActiveFilterId,
+        setActiveGroupEditing,
         setActiveSorting,
         setEditingGroupName,
         setHeaderColor,

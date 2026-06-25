@@ -19,6 +19,7 @@ const GroupSidebar = () => {
     openGroups,
     pendingGroupName,
     setActiveFilterId,
+    setActiveGroupEditing,
     setEditingGroupName,
     setHeaderTitle,
     setHeaderColor,
@@ -94,15 +95,16 @@ const GroupSidebar = () => {
               >
                 <p className="text-center">{group.name.toUpperCase()}</p>
                 <DropdownItem
-                  className="rounded-xl"
+                  className="rounded-xl cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
+                    setActiveGroupEditing(true);
                   }}
                 >
                   EDIT
                 </DropdownItem>
                 <DropdownItem
-                  className="rounded-xl"
+                  className="rounded-xl cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
