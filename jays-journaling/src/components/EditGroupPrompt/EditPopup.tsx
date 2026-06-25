@@ -13,23 +13,38 @@ const EditPopup = () => {
   return (
     <div className="fixed inset-0 top-[10vh] z-40 flex items-center justify-center">
       <div
-        className="w-[75vw] h-[60vh] border-4 border-red-500 rounded-xl shadow-2xl"
+        className="relative w-[75vw] h-[60vh] border-4 border-red-500 rounded-xl shadow-2xl flex flex-col"
         style={{
           backgroundColor: "var(--card-bg)",
         }}
       >
-        <div className="relative flex items-center justify-center ">
-          <input className="text-center mt-3" placeholder="test"></input>
+        {/* Header: title centered, X in top right */}
+        <div className="relative flex items-center justify-center pt-4 px-4">
+          <input className="text-center h-10" placeholder="Group Title" />
           <button
-            className="absolute right-2 text-lg font-bold p-1 mt-3 mr-2 cursor-pointer"
+            className="absolute right-4 text-lg font-bold cursor-pointer"
             onClick={() => setActiveGroupEditing(false)}
           >
             X
           </button>
         </div>
-        {/* Placeholder text just to identify the box */}
-        <div className="flex items-center justify-center h-full text-red-500 font-bold text-4xl opacity-50">
+
+        {/* Main content area */}
+        <div className="flex items-center justify-center flex-1 text-red-500 font-bold text-4xl opacity-50">
           POPUP AREA
+        </div>
+
+        {/* Footer: Apply and Cancel centered at bottom */}
+        <div className="flex items-center justify-center gap-4 pb-4">
+          <button className="cursor-pointer border-2 border-black rounded-lg p-3">
+            APPLY
+          </button>
+          <button
+            className="cursor-pointer border-2 border-black rounded-lg p-3"
+            onClick={() => setActiveGroupEditing(false)}
+          >
+            CANCEL
+          </button>
         </div>
       </div>
     </div>
