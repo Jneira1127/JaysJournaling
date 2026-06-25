@@ -9,7 +9,7 @@ import { useUI } from "@/src/context/UIContext";
 import { useJournal } from "@/src/context/JournalContext";
 import { editGroup } from "@/src/app/action";
 import { useState } from "react";
-
+import { HexColorPicker } from "react-colorful";
 
 const EditPopup = () => {
   const { setActiveGroupEditing, selectedGroupId } = useUI();
@@ -23,33 +23,83 @@ const EditPopup = () => {
     await updateGroup(activeGroup!.id, name, color);
     setActiveGroupEditing(false);
   };
+  const boxSize = "240px";
 
   return (
-    <div className="fixed inset-0 top-[10vh] z-40 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
       <div
-        className="relative w-[75vw] h-[60vh] border-4 border-red-500 rounded-xl shadow-2xl flex flex-col"
-        style={{
-          backgroundColor: "var(--card-bg)",
-        }}
+        className="relative w-[90vw] max-w-[700px] border border-gray-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+        style={{ backgroundColor: "var(--card-bg, white)" }}
       >
         {/* Header: title centered, X in top right */}
-        <div className="relative flex items-center justify-center pt-4 px-4">
-          <input
-            className="text-center h-10"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <div className="flex-1 px-4">
+            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
+              Group Name
+            </label>
+            <input
+              className="text-2xl font-bold bg-transparent border-none focus:ring-0 outline-none w-full p-0"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Group Name"
+              autoFocus
+            />
+          </div>
           <button
-            className="absolute right-4 text-lg font-bold cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400"
             onClick={() => setActiveGroupEditing(false)}
           >
-            X
+            <span className="text-xl">✕</span>
           </button>
         </div>
 
         {/* Main content area */}
-        <div className="flex items-center justify-center flex-1 text-red-500 font-bold text-4xl opacity-50">
-          POPUP AREA
+        <div className="flex items-center justify-center p-10">
+          <div className="flex items-center gap-12">
+            {/* Left Side: The Picker */}
+            <div className="flex flex-col items-center gap-4">
+              {/* Note: We use a style object to force the picker size */}
+              <div
+                style={{ width: boxSize, height: boxSize }}
+                className="custom-color-picker"
+              >
+                <HexColorPicker
+                  color={color}
+                  onChange={setColor}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                Choose Color
+              </p>
+            </div>
+
+            {/* Middle: The Divider */}
+            <div className="w-[1px] h-48 bg-gray-200" />
+
+            {/* Right Side: The Preview */}
+            <div className="flex flex-col items-center gap-4">
+              <div
+                style={{
+                  width: boxSize,
+                  height: boxSize,
+                  backgroundColor: color,
+                  borderRadius: "12px", // Matches react-colorful default radius
+                  boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)",
+                  border: "8px solid white",
+                }}
+                className="shadow-inner"
+              />
+              <div className="text-center">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-tighter mb-1">
+                  Selected
+                </p>
+                <code className="text-lg font-mono font-bold bg-gray-100 px-3 py-1 rounded-md lowercase">
+                  {color}
+                </code>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Footer: Apply and Cancel centered at bottom */}
