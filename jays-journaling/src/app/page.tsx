@@ -5,9 +5,7 @@ import ClientShell from "./ClientShell";
 export default async function Home() {
   // Fetch all notes and groups from the database on the server
   const dbNotes = await prisma.note.findMany({
-    orderBy: {
-      id: "asc",
-    },
+    include: { group: true },
   });
 
   const dbGroups = await prisma.group.findMany({

@@ -13,10 +13,13 @@ import DropdownItem from "../Dropdown/DropdownItems";
 
 const NoteBox = ({ note }: { note: NoteType }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { toggleNoteSelection, deleteSingleNote } = useJournal();
+  const { deleteSingleNote, groups, toggleNoteSelection } = useJournal();
   const { visibleDelete, visibleGrouping } = useUI();
   const ellipsesRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
+
+  const parentGroup = groups.find((g) => g.id === note.groupId);
+  const displayColor = parentGroup ? parentGroup.color : "var(--card-footer)";
 
   const handleBoxClick = () => {
     if (visibleDelete || visibleGrouping) {
@@ -61,7 +64,7 @@ const NoteBox = ({ note }: { note: NoteType }) => {
 
       <div
         className="h-20 flex items-center justify-center relative text-note-label-txt"
-        style={{ background: note.groupColor || "var(--card-footer)" }}
+        style={{ background: displayColor }}
       >
         <span className="font-bold">{note.label}</span>
 
@@ -125,4 +128,5 @@ const NoteBox = ({ note }: { note: NoteType }) => {
   );
 };
 
+NoteBox.displayName = "NoteBox";
 export default NoteBox;

@@ -49,7 +49,7 @@ const GroupSidebar = () => {
               closeAllSidebars();
             }}
           >
-            DEFAULT
+            SHOW ALL
           </div>
         )}
         {groups.map((group) => (

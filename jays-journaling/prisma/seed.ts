@@ -5,16 +5,15 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
 import path from "path";
 
-// 1. Load environment variables from .env
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined in your .env file");
+  console.error("❌ Error: DATABASE_URL is not defined in your .env file");
+  process.exit(1);
 }
 
-// 2. Setup the adapter (matching your src/lib/db.ts logic)
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
@@ -22,71 +21,62 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("🔄 Resetting database data...");
 
-  // 3. Delete all existing data
-  await prisma.note.deleteMany({});
-  await prisma.group.deleteMany({});
+  try {
+    // 1. Delete all existing data
+    await prisma.note.deleteMany({});
+    await prisma.group.deleteMany({});
 
-  // 4. Reset ID counters
-  await prisma.$executeRawUnsafe(
-    `ALTER SEQUENCE "Note_id_seq" RESTART WITH 1;`,
-  );
-  await prisma.$executeRawUnsafe(
-    `ALTER SEQUENCE "Group_id_seq" RESTART WITH 1;`,
-  );
+    // 2. Reset ID counters (Restart at 1)
+    // Note: These might fail if the sequence names differ, so we wrap them
+    await prisma.$executeRawUnsafe(
+      `ALTER SEQUENCE IF EXISTS "Note_id_seq" RESTART WITH 1;`,
+    );
+    await prisma.$executeRawUnsafe(
+      `ALTER SEQUENCE IF EXISTS "Group_id_seq" RESTART WITH 1;`,
+    );
 
-  console.log("🌱 Seeding fresh data...");
+    console.log("🌱 Seeding fresh data...");
 
-  // 5. Seed Groups
-  await prisma.group.createMany({
-    data: [
-      { id: 1, name: "personal", color: "#FF746C" },
-      { id: 2, name: "professional", color: "#82C8E5" },
-      { id: 3, name: "misc", color: "#FFBF00" },
-    ],
-  });
+    // 3. Seed Groups
+    await prisma.group.createMany({
+      data: [
+        { id: 1, name: "personal", color: "#FF746C" },
+        { id: 2, name: "professional", color: "#82C8E5" },
+        { id: 3, name: "misc", color: "#FFBF00" },
+      ],
+    });
 
-  // 6. Seed the 4 Preset Notes
-  await prisma.note.createMany({
-    data: [
-      {
-        id: 1,
-        label: "Jays Note",
-        text: "this is Jays note",
-      },
-      {
-        id: 2,
-        label: "Lorem Ipsum",
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      },
-      {
-        id: 3,
-        label: "Untitled",
-        text: "",
-      },
-      {
-        id: 4,
-        label: "sfafsad",
-        text: "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a",
-      },
-    ],
-  });
+    // 4. Seed Notes
+    await prisma.note.createMany({
+      data: [
+        { id: 1, label: "Jays Note", text: "this is Jays note" },
+        { id: 2, label: "Lorem Ipsum", text: "Lorem ipsum dolor sit amet..." },
+        { id: 3, label: "Untitled", text: "" },
+        { id: 4, label: "sfafsad", text: "a a a a a..." },
+      ],
+    });
 
-  await prisma.$executeRawUnsafe(
-    `SELECT setval('"Note_id_seq"', (SELECT MAX(id) FROM "Note"));`,
-  );
-  await prisma.$executeRawUnsafe(
-    `SELECT setval('"Group_id_seq"', (SELECT MAX(id) FROM "Group"));`,
-  );
+    // 5. Synchronize sequences with the manual IDs we just inserted
+    // We use COALESCE to handle cases where the table might be empty (though not here)
+    await prisma.$executeRawUnsafe(
+      `SELECT setval('"Note_id_seq"', COALESCE((SELECT MAX(id) FROM "Note"), 1), true);`,
+    );
+    await prisma.$executeRawUnsafe(
+      `SELECT setval('"Group_id_seq"', COALESCE((SELECT MAX(id) FROM "Group"), 1), true);`,
+    );
 
-  console.log("✅ Database reset and seeded successfully!");
+    console.log("✅ Database seeded successfully!");
+  } catch (error) {
+    console.error("❌ Seed failed:", error);
+    throw error; // Re-throw to ensure the process exits with code 1
+  }
 }
 
 main()
   .catch((e) => {
-    console.error(e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end(); // Important to close the pool so the script exits
+    await pool.end();
   });

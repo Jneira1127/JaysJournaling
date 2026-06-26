@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  ReactNode,
+} from "react";
 import { NoteType, GroupType, DbNote, DbGroup } from "@/src/app/types";
 import {
   createNoteAction,
@@ -8,18 +14,21 @@ import {
   updateNoteGroupAction,
   editGroup,
 } from "@/src/app/action";
-import { revalidatePath } from "next/dist/server/web/spec-extension/revalidate";
 
 interface JournalContextType {
-  notes: NoteType[];
-  groups: GroupType[];
-  addGroup: (name: string, color: string) => Promise<void>;
-  addNote: () => Promise<void>;
-  deleteSingleNote: (id: number) => Promise<void>;
+  addGroup: (name: string, color: string) => Promise<DbGroup | undefined>;
+  addNote: () => Promise<DbNote | undefined>;
   deleteSelectedNotes: () => Promise<void>;
+  deleteSingleNote: (id: number) => Promise<void>;
   groupSelectedNotes: (groupId: number) => Promise<void>;
+  groups: GroupType[];
+  notes: NoteType[];
   toggleNoteSelection: (id: number) => void;
-  updateGroup: (groupId: number, name: string, color: string) => Promise<void>;
+  updateGroup: (
+    groupId: number,
+    name: string,
+    color: string,
+  ) => Promise<DbGroup | undefined>;
 }
 
 interface JournalProviderProps {
@@ -35,66 +44,59 @@ export function JournalProvider({
   initialNotes,
   initialGroups,
 }: JournalProviderProps) {
-  const [notes, setNotes] = useState<NoteType[]>(
-    initialNotes.map((n) => ({ ...n, isSelected: false })),
+  // 1. Only store the IDs of selected notes in state
+  const [selectedNoteIds, setSelectedNoteIds] = useState<Set<number>>(
+    new Set(),
   );
-  const [groups, setGroups] = useState<GroupType[]>(
-    initialGroups.map((g) => ({
-      ...g,
-      notes: g.notes.map((n) => ({ ...n, isSelected: false })),
-    })),
-  );
+
+  // 2. Derive the notes list by combining server props with selection state
+  // This is lightning fast and never triggers "cascading renders"
+  const notes = useMemo(() => {
+    return initialNotes.map((n) => ({
+      ...n,
+      isSelected: selectedNoteIds.has(n.id),
+    }));
+  }, [initialNotes, selectedNoteIds]);
+
+  // Groups come directly from server props
+  const groups = initialGroups as GroupType[];
+
+  const toggleNoteSelection = (id: number) => {
+    setSelectedNoteIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   const addNote = async () => {
-    const newNote = await createNoteAction();
-    setNotes((prev) => [...prev, { ...newNote, isSelected: false }]);
+    return await createNoteAction();
   };
 
-  const addGroup = async (name: string, color: string) => {
-    const newGroup = await createGroupAction(name, color);
-    setGroups((prev) => [...prev, { ...newGroup, notes: [] }]);
-  };
+  const addGroup = async (name: string, color: string) =>
+  {return await createGroupAction(name, color)};
 
   const deleteSingleNote = async (id: number) => {
     await deleteNoteAction(id);
-    setNotes((prev) => prev.filter((n) => n.id !== id));
   };
 
   const deleteSelectedNotes = async () => {
-    const selectedIds = notes.filter((n) => n.isSelected).map((n) => n.id);
-    for (const id of selectedIds) {
-      await deleteNoteAction(id);
-    }
-    setNotes((prev) => prev.filter((n) => !n.isSelected));
-  };
-
-  const toggleNoteSelection = (id: number) => {
-    setNotes((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isSelected: !n.isSelected } : n)),
-    );
+    const ids = Array.from(selectedNoteIds);
+    await Promise.all(ids.map((id) => deleteNoteAction(id)));
+    setSelectedNoteIds(new Set()); // Clear selection
   };
 
   const groupSelectedNotes = async (groupId: number) => {
     const targetGroup = groups.find((g) => g.id === groupId);
     if (!targetGroup) return;
-
-    const selectedIds = notes.filter((n) => n.isSelected).map((n) => n.id);
-    await updateNoteGroupAction(selectedIds, targetGroup.color, groupId);
-
-    setNotes((prev) =>
-      prev.map((n) =>
-        n.isSelected
-          ? { ...n, isSelected: false, groupColor: targetGroup.color, groupId }
-          : n,
-      ),
-    );
+    const ids = Array.from(selectedNoteIds);
+    await updateNoteGroupAction(ids, targetGroup.color, groupId);
+    setSelectedNoteIds(new Set());
   };
 
   const updateGroup = async (groupId: number, name: string, color: string) => {
-    await editGroup(name, color, groupId);
-    setGroups((prev) =>
-      prev.map((g) => (g.id === groupId ? { ...g, name, color } : g)),
-    );
+    return await editGroup(name, color, groupId);
   };
 
   return (
@@ -102,11 +104,11 @@ export function JournalProvider({
       value={{
         addGroup,
         addNote,
+        notes,
+        groups,
         deleteSelectedNotes,
         deleteSingleNote,
-        groups,
         groupSelectedNotes,
-        notes,
         toggleNoteSelection,
         updateGroup,
       }}

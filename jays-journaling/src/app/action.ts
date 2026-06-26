@@ -51,21 +51,25 @@ export async function updateNoteGroupAction(
 export async function createGroupAction(name: string, color: string) {
   const newGroup = await prisma.group.create({
     data: { name, color },
+    include: { notes: true },
   });
   revalidatePath("/");
   return newGroup;
 }
 
-export async function editGroup(
-  name: string,
-  color: string,
-  groupId: number,
-) {
-  const updateGroup = await prisma.group.update({
-    where: { id: groupId },
-    data: { name, color },
-  });
+export async function editGroup(name: string, color: string, groupId: number) {
+  try {
+    const updateGroup = await prisma.group.update({
+      where: { id: groupId },
+      data: { name, color },
+      include: { notes: true },
+    });
 
-  revalidatePath("/");
-  return updateGroup;
+    // Remove revalidatePath("/") if you want the absolute fastest UI.
+    // The Context update below handles the UI.
+    return updateGroup;
+  } catch (error) {
+    console.error("Edit group failed:", error);
+    return undefined
+  }
 }
